@@ -15,6 +15,9 @@ import category_ghee from "../../assets/images/category-10-ghee.png";
 import category_beverages from "../../assets/images/category-11-beverages.png";
 import category_sweets from "../../assets/images/category-12-sweets.png";
 
+
+import formVideo from "../../assets/videos/shopping2.mp4";
+
 // Export all as default object
 const images = {
     logo,
@@ -30,6 +33,7 @@ const images = {
     category_ghee,
     category_beverages,
     category_sweets,
+    formVideo,
 };
 
 export default images;

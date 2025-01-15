@@ -5,4 +5,12 @@ import ProductCategoryCardComponent from "../../components/customer_components/c
 import HeaderNavIcons from "../../components/customer_components/customer_common_components/HeaderNavIcons";
 import SolidButton from "../../components/common_components/SolidButton";
 
-export { HeaderComponent, FooterComponent, ProductCategoryCardComponent, HeaderNavIcons, SolidButton };
+// Form components
+import InputFieldComponent from "../../components/form_components/InputFieldComponent";
+import PasswordFieldComponent from "../../components/form_components/PasswordFieldComponent";
+import FormBtn from "../../components/form_components/FormBtn";
+import SecondaryFormBtn from "../../components/form_components/SecondaryFormBtn";
+import RadioButtonGroup from "../../components/form_components/RadioButtonGroup";
+import DropdownComponent from "../../components/form_components/DropdownComponent";
+
+export { HeaderComponent, FooterComponent, ProductCategoryCardComponent, HeaderNavIcons, SolidButton, InputFieldComponent, PasswordFieldComponent, FormBtn, SecondaryFormBtn, RadioButtonGroup, DropdownComponent };  

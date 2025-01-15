@@ -1,4 +1,5 @@
 import React from 'react'
+import Modal from 'react-modal'
 import { Outlet } from 'react-router-dom'
 import { HeaderComponent, FooterComponent } from '../utils/resource/ComponentsProvider.util'
 
@@ -9,7 +10,7 @@ const CustomerLayout = () => {
       {/* Header Section */}
       <header
         id="header"
-        className="h-[100px] w-full bg-white flex items-center justify-between px-[7vw] relative"
+        className="h-[12vh] w-full bg-white flex items-center justify-between px-[7vw] relative"
       >
         <HeaderComponent />
       </header>

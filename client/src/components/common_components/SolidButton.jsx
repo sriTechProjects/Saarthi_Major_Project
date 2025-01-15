@@ -6,7 +6,7 @@ const SolidButton = ({ containsIcon, icon, onClick, text }) => {
     <Button
       variant="contained"
       startIcon={icon}
-      style={{ background: "#03C988", boxShadow: "none", padding: "0.5rem" }}
+      style={{ background: "#03C988", boxShadow: "none", padding: "0.5rem 0.9rem" }}
     >
       {text}
     </Button>
