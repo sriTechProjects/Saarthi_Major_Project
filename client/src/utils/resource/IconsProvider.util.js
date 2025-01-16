@@ -17,6 +17,8 @@ import { FaUserLock } from "react-icons/fa";
 import { MdOutlineVerifiedUser } from "react-icons/md";
 import { HiUserAdd } from "react-icons/hi";
 import { MdPhone } from "react-icons/md";
+import { FaShop } from "react-icons/fa6";
+import { BsShop } from "react-icons/bs";
 
 
 export { 
@@ -39,5 +41,7 @@ export {
     FaUserLock,
     MdOutlineVerifiedUser,
     HiUserAdd,
-    MdPhone
+    MdPhone,
+    FaShop,
+    BsShop
 }

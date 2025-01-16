@@ -11,6 +11,7 @@ import ForgetPassword from './pages/forms/ForgetPassword';
 import VerifyOTP from './pages/forms/VerifyOTP';
 import ResetPassword from './pages/forms/ResetPassword';
 import CustomerRegistration from './pages/forms/CustomerRegistration';
+import SellerRegistration from './pages/forms/SellerRegistration';
 
 
 const App = () => {
@@ -47,6 +48,10 @@ const App = () => {
         {
           path: "customer-registration",
           element: <CustomerRegistration />
+        },
+        {
+          path: "seller-registration",
+          element: <SellerRegistration />
         }
       ]
     }
