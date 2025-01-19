@@ -1,50 +1,27 @@
-const asyncHandler = require("express-async-handler");
-const bcrypt = require("bcrypt");
-const Buyer = require("../../models/buyer");
-const Seller = require("../../models/seller");
-
-const register = asyncHandler(async (req, res) => {
-  const { role, email, password } = req.body;
-
-  if (!role || !email || !password) {
-    return res
-      .status(400)
-      .json({ message: "Role, email, and password are required." });
-  }
-
-  if (role !== "buyer" && role !== "seller") {
-    return res
-      .status(400)
-      .json({ message: "Invalid role. Must be 'buyer' or 'seller'." });
-  }
-
+const signin = async (req, res) => {
+  const { email, password } = req.body;
   try {
-    const existingUser =
-      role === "buyer"
-        ? await Buyer.findOne({ email })
-        : await Seller.findOne({ email });
-
-    if (existingUser) {
-      return res.status(400).json({ message: "User already exists." });
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Email and password are required." });
     }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    let newUser;
-    if (role === "buyer") {
-      newUser = await Buyer.create({ email, password: hashedPassword });
-    } else {
-      newUser = await Seller.create({ email, password: hashedPassword });
+    const user = await Login.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "buyer" });
     }
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Invalid credentials." });
+    }
+    const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
-    res
-      .status(201)
-      .json({
-        message: `${role.charAt(0).toUpperCase() + role.slice(1)} account created successfully.`,
-      });
+    res.status(200).json({ message: "Login successful.", token });
   } catch (error) {
-    console.error("Registration error:", error);
     res.status(500).json({ message: "Internal server error.", error });
   }
-});
+};
 
-module.exports = { register };
+module.exports = { signin };

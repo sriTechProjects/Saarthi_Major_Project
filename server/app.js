@@ -1,5 +1,5 @@
+require("dotenv").config();
 const express = require("express");
-const dotenv = require("dotenv");
 
 const app = express();
 const authRoutes = require("./routes/auth/authRoutes");
@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 8000;
 const Connection = async () => {
   try {
     app.listen(PORT, () => {
-      console.log("> Server -- {OK}");
+      console.log(`~ Server [${PORT}][OK]`);
     });
   } catch (error) {
     console.log("Unable to Make A Connection");
