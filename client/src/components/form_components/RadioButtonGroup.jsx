@@ -17,25 +17,24 @@ const RadioButtonGroup = ({
       )}
 
       <div className="flex items-center gap-4">
-        {options.map((option) => (
-          <label
-            key={option}
-            className={`flex items-center gap-2 cursor-pointer`}
-          >
+      {options.map((option) => {
+        const value = typeof option === 'object' ? option.value : option;
+        const label = typeof option === 'object' ? option.label : option;
+        
+        return (
+          <label key={value} className={`flex items-center gap-2 cursor-pointer`}>
             <input
               type="radio"
               name={name}
-              value={option.value}
-              checked={selectedValue === option.value}
-              onChange={() => onChange(option.value)}
+              value={value}
+              checked={selectedValue === value}
+              onChange={() => onChange(value)}
               required={required}
-              className={`
-                w-4 h-4 text-primary border-gray-300 focus:ring-primary
-              `}
             />
-            <span className="text-sm text-gray-700">{option}</span>
+            <span className="text-sm text-gray-700">{label}</span>
           </label>
-        ))}
+        );
+      })}
       </div>
     </div>
   );

@@ -27,9 +27,9 @@ const CustomerRegistration = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [contactNumber, setContactNumber] = useState(null);
-  const [age, setAge] = useState(null);
-  const [gender, setGender] = useState(null);
+  const [contactNumber, setContactNumber] = useState("");
+const [age, setAge] = useState("");
+const [gender, setGender] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("");
@@ -164,41 +164,44 @@ const CustomerRegistration = () => {
             <div className="flex flex-col gap-5">
               {/* phone number and age */}
               <div className="flex gap-3 w-full">
-                <InputFieldComponent
-                  label="Contact Number"
-                  type="tel"
-                  name="contactNumber"
-                  id="contactNumber"
-                  placeholder="Your contact number"
-                  icon={MdPhone}
-                  value={contactNumber}
-                  onChange={setContactNumber}
-                  required={true}
-                />
+              <InputFieldComponent
+  label="Contact Number"
+  type="tel"
+  name="contactNumber"
+  id="contactNumber"
+  placeholder="Your contact number"
+  icon={MdPhone}
+  value={contactNumber}
+  onChange={(value) => setContactNumber(value.replace(/\D/g, ''))}
+  required={true}
+/>
 
-                <InputFieldComponent
-                  label="Age"
-                  type="number"
-                  name="age"
-                  id="age"
-                  placeholder="Your age"
-                  icon={null}
-                  value={age}
-                  onChange={setAge}
-                  required={false}
-                />
+<InputFieldComponent
+  label="Age"
+  type="number"
+  name="age"
+  id="age"
+  placeholder="Your age"
+  icon={null}
+  value={age}
+  onChange={(value) => setAge(Math.max(18, parseInt(value) || 18))}
+  required={true}
+/>
               </div>
 
               {/* gender */}
               <RadioButtonGroup
-                label="Select Gender"
-                name="gender"
-                options={["Male", "Female", "Other"]}
-                selectedValue={gender}
-                onChange={setGender}
-                required={false}
-              />
-
+  label="Select Gender"
+  name="gender"
+  options={[
+    { label: "Male", value: "male" },
+    { label: "Female", value: "female" },
+    { label: "Other", value: "other" }
+  ]}
+  selectedValue={gender}
+  onChange={setGender}
+  required={true}
+/>
               {/* 2FA */}
               <div className="flex items-center gap-2 border p-4 rounded-lg">
                 <input
