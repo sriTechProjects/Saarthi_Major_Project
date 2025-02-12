@@ -1,9 +1,14 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import CustomerHomePage from "./pages/customer/CustomerHomePage";
+
+// layouts
 import CustomerLayout from "./layouts/CustomerLayout";
 import FormLayout from "./layouts/FormsLayout";
+
+// customer components
+import CustomerHomePage from "./pages/customer/CustomerHomePage";
+import CustomerProductPage from "./pages/customer/CustomerProductPage";
 
 // Import auth components
 import LoginForm from "./pages/forms/LoginForm";
@@ -30,6 +35,10 @@ const App = () => {
           path: "/",
           element: <CustomerHomePage />,
         },
+        {
+          path: "product",
+          element: <CustomerProductPage/>
+        }
       ],
     },
     // Auth routes

@@ -4,6 +4,8 @@ import FooterComponent from "../../components/customer_components/customer_commo
 import ProductCategoryCardComponent from "../../components/customer_components/customer_homepage/ProductCategoryCardComponent";
 import HeaderNavIcons from "../../components/customer_components/customer_common_components/HeaderNavIcons";
 import SolidButton from "../../components/common_components/SolidButton";
+import ProductRatings from "../../components/customer_components/customer_common_components/ProductRatings";
+import CartItem from "../../components/customer_components/customer_cart/CartItem";
 
 // Form components
 import InputFieldComponent from "../../components/form_components/InputFieldComponent";
@@ -13,4 +15,4 @@ import SecondaryFormBtn from "../../components/form_components/SecondaryFormBtn"
 import RadioButtonGroup from "../../components/form_components/RadioButtonGroup";
 import DropdownComponent from "../../components/form_components/DropdownComponent";
 
-export { HeaderComponent, FooterComponent, ProductCategoryCardComponent, HeaderNavIcons, SolidButton, InputFieldComponent, PasswordFieldComponent, FormBtn, SecondaryFormBtn, RadioButtonGroup, DropdownComponent };  
+export { HeaderComponent, FooterComponent, ProductCategoryCardComponent, HeaderNavIcons, SolidButton, InputFieldComponent, PasswordFieldComponent, FormBtn, SecondaryFormBtn, RadioButtonGroup, DropdownComponent, ProductRatings, CartItem };  

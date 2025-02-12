@@ -1,10 +1,10 @@
 import { FaStore } from "react-icons/fa";
-import { FaBasketShopping } from "react-icons/fa6";
+import { FaBasketShopping, FaXTwitter, FaShop, FaClock, FaLocationDot } from "react-icons/fa6";
+
 import { RxHamburgerMenu } from "react-icons/rx";
 import { FaUser } from "react-icons/fa";
 import { RxCross1 } from "react-icons/rx";
 import { FaFacebookF } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
 import { BsInstagram } from "react-icons/bs";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
@@ -17,8 +17,11 @@ import { FaUserLock } from "react-icons/fa";
 import { MdOutlineVerifiedUser } from "react-icons/md";
 import { HiUserAdd } from "react-icons/hi";
 import { MdPhone } from "react-icons/md";
-import { FaShop } from "react-icons/fa6";
 import { BsShop } from "react-icons/bs";
+import { FaStar } from "react-icons/fa";
+import { FaShoppingCart } from "react-icons/fa";
+import { FaBolt } from "react-icons/fa";
+
 
 
 export { 
@@ -43,5 +46,10 @@ export {
     HiUserAdd,
     MdPhone,
     FaShop,
-    BsShop
+    BsShop,
+    FaStar,
+    FaShoppingCart,
+    FaBolt,
+    FaLocationDot,
+    FaClock,
 }

@@ -1,15 +1,26 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 
 //asstes import
 import images from "../../../utils/resource/ImageProvider.util";
 
 // react icons import
-import { FaStore, FaBasketShopping, RxHamburgerMenu, RxCross1, FaUser } from '../../../utils/resource/IconsProvider.util'
+import {
+  FaStore,
+  FaBasketShopping,
+  RxHamburgerMenu,
+  RxCross1,
+  FaUser,
+} from "../../../utils/resource/IconsProvider.util";
 
-import { HeaderNavIcons, SolidButton } from '../../../utils/resource/ComponentsProvider.util'
+import {
+  HeaderNavIcons,
+  SolidButton,
+} from "../../../utils/resource/ComponentsProvider.util";
 
-const HeaderComponent = () => {
+
+const HeaderComponent = ({toggleBasket}) => {
   // Use state to manage the visibility of the menu
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -23,18 +34,37 @@ const HeaderComponent = () => {
     setIsMenuOpen(false);
   };
 
+  const navigate = useNavigate();
+
   return (
     <>
-      <a href="">
+      <Link to="/">
         <img src={images.logo} alt="saarthi logo" className="w-[25vh]" />
-      </a>
+      </Link>
       <div>
         <div className="items-center justify-between gap-8 hidden md:flex">
-          <HeaderNavIcons icon={<FaStore/>} item="Become a seller" indicator={false} indicatorValue={0}/>
-          
-          <HeaderNavIcons icon={<FaBasketShopping/>} item="Basket" indicator={true} indicatorValue={2}/>
+          <HeaderNavIcons
+            icon={<FaStore />}
+            item="Become a seller"
+            indicator={false}
+            indicatorValue={0}
+          />
 
-          <SolidButton containsIcon={true} icon={<FaUser/>} onClick={""} text="Login" />
+          <button onClick={toggleBasket}>
+            <HeaderNavIcons
+              icon={<FaBasketShopping />}
+              item="Basket"
+              indicator={true}
+              indicatorValue={2}
+            />
+          </button>
+
+          <SolidButton
+            containsIcon={true}
+            icon={<FaUser />}
+            onClick={()=>{navigate('/auth/login')}}
+            text="Login"
+          />
         </div>
 
         {/* Use onClick to call openMenu function */}
@@ -72,10 +102,13 @@ const HeaderComponent = () => {
               Visit Basket
             </a>
 
-            <a className="flex items-center justify-center gap-3 bg-[#fff] text-[#333] py-4 px-10 rounded-lg font-bold text-[1.09rem] cursor-pointer">
-              <FaUser/>
+            <button
+              onClick={() => navigate("/auth/login")}
+              className="flex items-center justify-center gap-3 bg-[#fff] text-[#333] py-4 px-10 rounded-lg font-bold text-[1.09rem] cursor-pointer"
+            >
+              <FaUser />
               Login
-            </a>
+            </button>
           </div>
         </div>
       )}

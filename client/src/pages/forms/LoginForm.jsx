@@ -13,10 +13,26 @@ import {
 } from "../../utils/resource/IconsProvider.util";
 
 import images from "../../utils/resource/ImageProvider.util"
+import axiosinstance from '../../utils/validator/axiosInstance'
+// import { validateEmail } from 
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleLogin = async(e) =>{
+    e.preventDefault();
+
+    if(!email || !password){
+      toast.error(email ? "Password field not filled!" : "Password field not filled");
+      return;
+    }
+
+    if(!validateEmail(email)){
+      toast.error("Enter a valid Email ID");
+      return;
+    }
+  }
 
   return (
     <>
@@ -81,7 +97,7 @@ const LoginForm = () => {
             </div>
           </div>
 
-          <FormBtn btnText="Login" />
+          <FormBtn btnText="Login" onClick={(e) => handleLogin} />
 
           <div className="flex gap-3 items-center">
             <hr className="w-full" />{" "}
