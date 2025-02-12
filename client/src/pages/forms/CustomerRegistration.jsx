@@ -19,6 +19,7 @@ import {
 
 import images from "../../utils/resource/ImageProvider.util";
 import { Link } from "react-router-dom";
+import axiosInstance from "../../utils/validator/axiosInstance"
 
 const CustomerRegistration = () => {
   const [page, setPage] = useState(1);
@@ -44,6 +45,36 @@ const CustomerRegistration = () => {
     { label: "Germany", value: "DE" },
     { label: "France", value: "FR" },
   ];
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+  
+    const formData = {
+      firstName,
+      lastName,
+      email,
+      password,
+      contactNumber,
+      age,
+      gender,
+      street,
+      landmark,
+      city,
+      state,
+      country: selectedCountry,
+      zipcode
+    };
+  
+    try {
+      const response = await axiosInstance.post("/saarthi/auth/signup", formData); 
+      console.log("Registration Successful:", response.data);
+      alert("Registration Successful!");
+    } catch (error) {
+      console.error("Registration Failed:", error.response?.data || error.message);
+      alert("Registration Failed. Please try again.");
+    }
+  };
+  
 
   const handleNextPage = () => {
     setPage(page + 1);
@@ -273,7 +304,7 @@ const CustomerRegistration = () => {
 
             {page < 3 && <FormBtn btnText="Next" onClick={handleNextPage} />}
 
-            {page === 3 && <FormBtn btnText="Submit" onClick={null} />}
+            {page === 3 && <FormBtn btnText="Submit" onClick={handleSubmit} />}
           </div>
 
           <div className="flex gap-3 items-center">
