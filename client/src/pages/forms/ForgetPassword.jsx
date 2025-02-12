@@ -16,6 +16,10 @@ import images from "../../utils/resource/ImageProvider.util"
 const ForgetPassword = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
+  const handleSendOTP = ()=>{
+    navigate('/auth/verify-otp');
+  }
+  
   return (
     <>
     <div className="absolute top-0 left-0 w-full bg-white flex items-center justify-between px-8 mt-2">
@@ -51,7 +55,7 @@ const ForgetPassword = () => {
         />
 
         <div className="flex flex-col gap-3 w-full">
-          <FormBtn btnText="Send OTP" />
+          <FormBtn btnText="Send OTP" onClick={handleSendOTP} />
 
           <button className="border hover:bg-[#f5f5f5] text-primary-txt px-4 py-2 rounded-md flex gap-2 items-center justify-center"
           onClick={() => navigate("/auth/login")}

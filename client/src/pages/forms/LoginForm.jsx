@@ -14,6 +14,7 @@ import {
 
 import images from "../../utils/resource/ImageProvider.util"
 import axiosinstance from '../../utils/validator/axiosInstance'
+import { Link } from "react-router-dom";
 // import { validateEmail } from 
 
 const LoginForm = () => {
@@ -114,9 +115,9 @@ const LoginForm = () => {
 
           <p className="text-sm text-center text-primary-txt font-light">
             Don't have an account?{" "}
-            <a href="/signup" className="text-link font-medium">
+            <Link to="/auth/customer-registration" className="text-link font-medium">
               Sign up
-            </a>
+            </Link>
           </p>
         </form>
       </div>

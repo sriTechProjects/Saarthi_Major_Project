@@ -5,8 +5,14 @@ import {
 } from "../../utils/resource/IconsProvider.util";
 import { FormBtn } from "../../utils/resource/ComponentsProvider.util";
 import images from "../../utils/resource/ImageProvider.util"
+import { useNavigate } from "react-router-dom";
 
 const VerifyOTP = () => {
+  const navigate = useNavigate();
+  const handleVerifyOtp = () => {
+    navigate("/auth/reset-password");
+  }
+
   return (
     <>
         <div className="absolute top-0 left-0 w-full bg-white flex items-center justify-between px-8 mt-2">
@@ -56,7 +62,7 @@ const VerifyOTP = () => {
           <p className="text-sm text-right text-primary-txt font-regular">01:30</p>
 
           <div className="flex flex-col gap-6 w-full">
-            <FormBtn btnText="Verify OTP" />
+            <FormBtn btnText="Verify OTP" onClick={handleVerifyOtp} />
 
             <p className="text-sm text-center text-primary-txt font-light">
               Didn't receive the OTP?{" "}
@@ -65,7 +71,7 @@ const VerifyOTP = () => {
 
             <button
               className="border hover:bg-[#f5f5f5] text-primary-txt px-4 py-2 rounded-md flex gap-2 items-center justify-center"
-              onClick={() => navigate("/auth/login")}
+              onClick={()=>{navigate("/auth/login")}}
             >
               <IoMdArrowBack className="h-5 w-5" />
               <span className="text-sm font-medium font-body">

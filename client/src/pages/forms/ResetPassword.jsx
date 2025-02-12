@@ -16,6 +16,11 @@ const ResetPassword = () => {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleResetPassword = () =>{
+    navigate('/auth/login');
+  }
+  
   return (
     <>
       <div className="absolute top-0 left-0 w-full bg-white flex items-center justify-between px-8 mt-2">
@@ -60,7 +65,7 @@ const ResetPassword = () => {
           />
 
           <div className="flex flex-col gap-3 w-full">
-            <FormBtn btnText="Reset Password" />
+            <FormBtn btnText="Reset Password" onClick={handleResetPassword} />
 
             <button
               className="border hover:bg-[#f5f5f5] text-primary-txt px-4 py-2 rounded-md flex gap-2 items-center justify-center"

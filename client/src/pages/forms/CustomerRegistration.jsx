@@ -18,6 +18,7 @@ import {
 } from "../../utils/resource/IconsProvider.util";
 
 import images from "../../utils/resource/ImageProvider.util";
+import { Link } from "react-router-dom";
 
 const CustomerRegistration = () => {
   const [page, setPage] = useState(1);
@@ -290,9 +291,9 @@ const CustomerRegistration = () => {
 
           <p className="text-sm text-center text-primary-txt font-light">
             Already have an account?{" "}
-            <a href="/login" className="text-link font-medium">
+            <Link to="/auth/login" className="text-link font-medium">
               Login
-            </a>
+            </Link>
           </p>
         </form>
       </div>
