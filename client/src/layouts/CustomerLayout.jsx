@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import { Outlet } from 'react-router-dom'
 import { HeaderComponent, FooterComponent } from '../utils/resource/ComponentsProvider.util'
 import Basket from "../components/customer_components/customer_cart/Basket";
-import cartItems from "../utils/resource/DataProvider.util"
+import {cartItems} from "../utils/resource/DataProvider.util"
 
 
 const CustomerLayout = () => {

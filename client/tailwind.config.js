@@ -15,13 +15,25 @@ export default {
         'primary-btn': '#333333',
         'primary-btn-hover': '#4d4d4d',
         'link': '#0077b5',
+
+        'success': '#00D222',
+        'success-op': 'rgba(0, 189, 64, 0.12)',
+        'danger': '#FF0000',
+        'danger-op': 'rgba(255, 0, 0, 0.12)',
+        'sky': '#0897FF',
+        'sky-op': 'rgba(8, 151, 255, 0.12)',
+        'rose': '#FF5EF9',
+        'rose-op':'rgba(246, 139, 255, 0.12)',
+        'star': '#F8BD00',
+        'star-op': 'rgba(248, 189, 0, 0.12)',
+
         // Adding dashboard-specific colors
         'dashboard': {
           'sidebar': {
-            'active': '#03C988',    // Using your primary color
-            'hover': '#ebfef9',     // Light version of primary
-            'text': '#333333',      // Using your primary-txt
-            'icon': '#6b7280',      // Gray-500
+            'active': '#03C988',    
+            'hover': '#ebfef9',     
+            'text': '#333333',      
+            'icon': '#6b7280',     
           }
         }
       },
