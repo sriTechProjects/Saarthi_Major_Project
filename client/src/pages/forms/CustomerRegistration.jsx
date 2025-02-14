@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   InputFieldComponent,
   PasswordFieldComponent,
@@ -36,6 +37,7 @@ const [gender, setGender] = useState("");
   const [zipcode, setZipcode] = useState("");
   const [street, setStreet] = useState("");
   const [landmark, setLandmark] = useState("");
+  const navigate = useNavigate();
 
   const countryOptions = [
     { label: "United States", value: "US" },
@@ -69,6 +71,7 @@ const [gender, setGender] = useState("");
       const response = await axiosInstance.post("/saarthi/auth/signup", formData); 
       console.log("Registration Successful:", response.data);
       alert("Registration Successful!");
+      navigate('/auth/login');
     } catch (error) {
       console.error("Registration Failed:", error.response?.data || error.message);
       alert("Registration Failed. Please try again.");
