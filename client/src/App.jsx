@@ -26,6 +26,9 @@ import SellerProducts from "./pages/seller/SellerProducts";
 import SellerOrders from "./pages/seller/SellerOrders";
 import SellerAnalytics from "./pages/seller/SellerAnalytics";
 
+// import context
+import { UserProvider } from "./contexts/UserContext";
+
 const App = () => {
   const routes = createBrowserRouter([
     {
@@ -38,12 +41,12 @@ const App = () => {
         },
         {
           path: "product",
-          element: <CustomerProductPage/>
+          element: <CustomerProductPage />,
         },
         {
           path: "product-list",
-          element: <CustomerProductList/>
-        }
+          element: <CustomerProductList />,
+        },
       ],
     },
     // Auth routes
@@ -97,15 +100,17 @@ const App = () => {
         {
           path: "/seller/analytics",
           element: <SellerAnalytics />,
-        }
-      ]
+        },
+      ],
     },
   ]);
 
   return (
     <>
-      <Toaster position="top-center" />
-      <RouterProvider router={routes} />
+      <UserProvider>
+        <Toaster position="top-center" />
+        <RouterProvider router={routes} />
+      </UserProvider>
     </>
   );
 };

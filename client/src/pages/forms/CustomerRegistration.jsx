@@ -20,7 +20,7 @@ import {
 
 import images from "../../utils/resource/ImageProvider.util";
 import { Link } from "react-router-dom";
-import axiosInstance from "../../utils/validator/axiosInstance"
+import axiosInstance from "../../utils/validator/axiosInstance";
 
 const CustomerRegistration = () => {
   const [page, setPage] = useState(1);
@@ -29,8 +29,8 @@ const CustomerRegistration = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [contactNumber, setContactNumber] = useState("");
-const [age, setAge] = useState("");
-const [gender, setGender] = useState("");
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("");
@@ -50,7 +50,7 @@ const [gender, setGender] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+
     const formData = {
       firstName,
       lastName,
@@ -64,20 +64,25 @@ const [gender, setGender] = useState("");
       city,
       state,
       country: selectedCountry,
-      zipcode
+      zipcode,
     };
-  
+
     try {
-      const response = await axiosInstance.post("/saarthi/auth/signup", formData); 
+      const response = await axiosInstance.post(
+        "/saarthi/auth/signup",
+        formData
+      );
       console.log("Registration Successful:", response.data);
       alert("Registration Successful!");
-      navigate('/auth/login');
+      navigate("/auth/login");
     } catch (error) {
-      console.error("Registration Failed:", error.response?.data || error.message);
+      console.error(
+        "Registration Failed:",
+        error.response?.data || error.message
+      );
       alert("Registration Failed. Please try again.");
     }
   };
-  
 
   const handleNextPage = () => {
     setPage(page + 1);
@@ -167,44 +172,48 @@ const [gender, setGender] = useState("");
             <div className="flex flex-col gap-5">
               {/* phone number and age */}
               <div className="flex gap-3 w-full">
-              <InputFieldComponent
-  label="Contact Number"
-  type="tel"
-  name="contactNumber"
-  id="contactNumber"
-  placeholder="Your contact number"
-  icon={MdPhone}
-  value={contactNumber}
-  onChange={(value) => setContactNumber(value.replace(/\D/g, ''))}
-  required={true}
-/>
+                <InputFieldComponent
+                  label="Contact Number"
+                  type="tel"
+                  name="contactNumber"
+                  id="contactNumber"
+                  placeholder="Your contact number"
+                  icon={MdPhone}
+                  value={contactNumber}
+                  onChange={(value) =>
+                    setContactNumber(value.replace(/\D/g, ""))
+                  }
+                  required={true}
+                />
 
-<InputFieldComponent
-  label="Age"
-  type="number"
-  name="age"
-  id="age"
-  placeholder="Your age"
-  icon={null}
-  value={age}
-  onChange={(value) => setAge(Math.max(18, parseInt(value) || 18))}
-  required={true}
-/>
+                <InputFieldComponent
+                  label="Age"
+                  type="number"
+                  name="age"
+                  id="age"
+                  placeholder="Your age"
+                  icon={null}
+                  value={age}
+                  onChange={(value) =>
+                    setAge(Math.max(18, parseInt(value) || 18))
+                  }
+                  required={true}
+                />
               </div>
 
               {/* gender */}
               <RadioButtonGroup
-  label="Select Gender"
-  name="gender"
-  options={[
-    { label: "Male", value: "male" },
-    { label: "Female", value: "female" },
-    { label: "Other", value: "other" }
-  ]}
-  selectedValue={gender}
-  onChange={setGender}
-  required={true}
-/>
+                label="Select Gender"
+                name="gender"
+                options={[
+                  { label: "Male", value: "male" },
+                  { label: "Female", value: "female" },
+                  { label: "Other", value: "other" },
+                ]}
+                selectedValue={gender}
+                onChange={setGender}
+                required={true}
+              />
               {/* 2FA */}
               <div className="flex items-center gap-2 border p-4 rounded-lg">
                 <input

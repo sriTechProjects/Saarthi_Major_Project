@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useUser } from "../../../contexts/UserContext";
 
 // Assets import
 import images from "../../../utils/resource/ImageProvider.util";
@@ -22,15 +23,17 @@ import { formAvatar } from "../../../utils/validator/helper";
 
 const HeaderComponent = ({ toggleBasket }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // Simulating login state
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { user, setUser } = useUser();
   const navigate = useNavigate();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+
   const handleLogout = () => {
-    setIsLoggedIn(false);
+    setUser(null); // Clear user from context
     setIsDropdownOpen(false);
+    navigate("/auth/signin");
   };
 
   return (
@@ -55,18 +58,13 @@ const HeaderComponent = ({ toggleBasket }) => {
             />
           </button>
 
-          {isLoggedIn ? (
+          {user ? (
             <div className="relative">
               <button onClick={toggleDropdown} className="flex items-center gap-2">
-                {/* <img
-                  src={images.avatar}
-                  alt="User Avatar"
-                  className="w-8 h-8 rounded-full border"
-                /> */}
                 <span className="w-8 h-8 rounded-full border flex items-center justify-center font-normal">
-                  {formAvatar('Amrik Bhadra')}
+                  {formAvatar(user.name)}
                 </span>
-                <span>Amrik Bhadra</span>
+                <span>{user.name}</span>
               </button>
               {isDropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md border">
@@ -83,7 +81,7 @@ const HeaderComponent = ({ toggleBasket }) => {
             <SolidButton
               containsIcon={true}
               icon={<FaUser />}
-              onClick={() => setIsLoggedIn(true)}
+              onClick={() => navigate("/auth/signin")}
               text="Login"
             />
           )}
@@ -106,7 +104,7 @@ const HeaderComponent = ({ toggleBasket }) => {
             <a href="#" className="w-full text-center font-semibold text-xl flex items-center gap-6 justify-center">
               <FaBasketShopping className="text-xl" /> Visit Basket
             </a>
-            {isLoggedIn ? (
+            {user ? (
               <button
                 onClick={handleLogout}
                 className="flex items-center justify-center gap-3 bg-[#fff] text-[#333] py-4 px-10 rounded-lg font-bold text-[1.09rem] cursor-pointer"
@@ -115,7 +113,7 @@ const HeaderComponent = ({ toggleBasket }) => {
               </button>
             ) : (
               <button
-                onClick={() => setIsLoggedIn(true)}
+                onClick={() => navigate("/auth/signin")}
                 className="flex items-center justify-center gap-3 bg-[#fff] text-[#333] py-4 px-10 rounded-lg font-bold text-[1.09rem] cursor-pointer"
               >
                 <FaUser /> Login
