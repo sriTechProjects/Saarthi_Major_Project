@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   InputFieldComponent,
   PasswordFieldComponent,
@@ -12,28 +14,42 @@ import {
   FaUserLock,
 } from "../../utils/resource/IconsProvider.util";
 
-import images from "../../utils/resource/ImageProvider.util"
-import axiosinstance from '../../utils/validator/axiosInstance'
-import { Link } from "react-router-dom";
-// import { validateEmail } from 
-
+import images from "../../utils/resource/ImageProvider.util";
+import axiosinstance from "../../utils/validator/axiosInstance";
+import { Link, useNavigate } from "react-router-dom";
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async(e) =>{
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    if(!email || !password){
-      toast.error(email ? "Password field not filled!" : "Password field not filled");
+    if (!email || !password) {
+      toast.error(
+        email ? "Password field not filled!" : "Password field not filled"
+      );
       return;
     }
 
-    if(!validateEmail(email)){
-      toast.error("Enter a valid Email ID");
-      return;
+    try {
+      const response = await axiosinstance.post(
+        "/saarthi/auth/signin",
+        { email, password },
+        { withCredentials: true }
+      );
+
+      if (response.status === 200) {
+        toast.success("Login successful!");
+        console.log("User Data:", response.data);
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Login Error:", error.response?.data || error.message);
+      toast.error(error.response?.data?.message || "Login failed! Try again.");
     }
-  }
+  };
 
   return (
     <>
@@ -52,7 +68,7 @@ const LoginForm = () => {
             Enter your credentials to access your account
           </p>
         </header>
-        <form className="flex flex-col gap-5">
+        <form className="flex flex-col gap-5" onSubmit={handleLogin}>
           <InputFieldComponent
             label="Email"
             type="email"
@@ -98,7 +114,7 @@ const LoginForm = () => {
             </div>
           </div>
 
-          <FormBtn btnText="Login" onClick={(e) => handleLogin} />
+          <FormBtn btnText="Login" type="submit" />
 
           <div className="flex gap-3 items-center">
             <hr className="w-full" />{" "}
@@ -115,7 +131,10 @@ const LoginForm = () => {
 
           <p className="text-sm text-center text-primary-txt font-light">
             Don't have an account?{" "}
-            <Link to="/auth/customer-registration" className="text-link font-medium">
+            <Link
+              to="/auth/customer-registration"
+              className="text-link font-medium"
+            >
               Sign up
             </Link>
           </p>

@@ -9,6 +9,7 @@ import FormLayout from "./layouts/FormsLayout";
 // customer components
 import CustomerHomePage from "./pages/customer/CustomerHomePage";
 import CustomerProductPage from "./pages/customer/CustomerProductPage";
+import CustomerProductList from "./pages/customer/CustomerProductList";
 
 // Import auth components
 import LoginForm from "./pages/forms/LoginForm";
@@ -38,6 +39,10 @@ const App = () => {
         {
           path: "product",
           element: <CustomerProductPage/>
+        },
+        {
+          path: "product-list",
+          element: <CustomerProductList/>
         }
       ],
     },

@@ -1,11 +1,10 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-//asstes import
+// Assets import
 import images from "../../../utils/resource/ImageProvider.util";
 
-// react icons import
+// React icons import
 import {
   FaStore,
   FaBasketShopping,
@@ -19,22 +18,20 @@ import {
   SolidButton,
 } from "../../../utils/resource/ComponentsProvider.util";
 
+import { formAvatar } from "../../../utils/validator/helper";
 
-const HeaderComponent = ({toggleBasket}) => {
-  // Use state to manage the visibility of the menu
+const HeaderComponent = ({ toggleBasket }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  // Function to open the menu
-  const openMenu = () => {
-    setIsMenuOpen(true);
-  };
-
-  // Function to close the menu
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
-
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // Simulating login state
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setIsDropdownOpen(false);
+  };
 
   return (
     <>
@@ -49,7 +46,6 @@ const HeaderComponent = ({toggleBasket}) => {
             indicator={false}
             indicatorValue={0}
           />
-
           <button onClick={toggleBasket}>
             <HeaderNavIcons
               icon={<FaBasketShopping />}
@@ -59,56 +55,72 @@ const HeaderComponent = ({toggleBasket}) => {
             />
           </button>
 
-          <SolidButton
-            containsIcon={true}
-            icon={<FaUser />}
-            onClick={()=>{navigate('/auth/login')}}
-            text="Login"
-          />
+          {isLoggedIn ? (
+            <div className="relative">
+              <button onClick={toggleDropdown} className="flex items-center gap-2">
+                {/* <img
+                  src={images.avatar}
+                  alt="User Avatar"
+                  className="w-8 h-8 rounded-full border"
+                /> */}
+                <span className="w-8 h-8 rounded-full border flex items-center justify-center font-normal">
+                  {formAvatar('Amrik Bhadra')}
+                </span>
+                <span>Amrik Bhadra</span>
+              </button>
+              {isDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md border">
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <SolidButton
+              containsIcon={true}
+              icon={<FaUser />}
+              onClick={() => setIsLoggedIn(true)}
+              text="Login"
+            />
+          )}
         </div>
 
-        {/* Use onClick to call openMenu function */}
-        <button
-          onClick={openMenu}
-          className="flex md:hidden text-3xl text-[#333]"
-        >
+        <button onClick={toggleMenu} className="flex md:hidden text-3xl text-[#333]">
           <RxHamburgerMenu />
         </button>
       </div>
 
-      {/* Conditionally render the menu based on isMenuOpen state */}
       {isMenuOpen && (
-        <div
-          className="w-screen h-screen bg-[#000] absolute top-0 left-0 flex text-white p-10 justify-center items-center"
-          id="menu"
-        >
-          {/* Use onClick to call closeMenu function */}
-          <button className="absolute top-10 right-12" onClick={closeMenu}>
+        <div className="w-screen h-screen bg-[#000] absolute top-0 left-0 flex text-white p-10 justify-center items-center">
+          <button className="absolute top-10 right-12" onClick={toggleMenu}>
             <RxCross1 className="text-white text-2xl" />
           </button>
           <div className="flex flex-col gap-20 w-full">
-            <a
-              href="#"
-              className="w-full text-center font-semibold text-xl flex items-center gap-6 justify-center"
-            >
-              <FaStore className="text-[1.1rem] flex items-center gap-6" />
-              Become a Seller
+            <a href="#" className="w-full text-center font-semibold text-xl flex items-center gap-6 justify-center">
+              <FaStore className="text-[1.1rem]" /> Become a Seller
             </a>
-            <a
-              href="#"
-              className="w-full text-center font-semibold text-xl flex items-center gap-6 justify-center"
-            >
-              <FaBasketShopping className="text-xl" />
-              Visit Basket
+            <a href="#" className="w-full text-center font-semibold text-xl flex items-center gap-6 justify-center">
+              <FaBasketShopping className="text-xl" /> Visit Basket
             </a>
-
-            <button
-              onClick={() => navigate("/auth/login")}
-              className="flex items-center justify-center gap-3 bg-[#fff] text-[#333] py-4 px-10 rounded-lg font-bold text-[1.09rem] cursor-pointer"
-            >
-              <FaUser />
-              Login
-            </button>
+            {isLoggedIn ? (
+              <button
+                onClick={handleLogout}
+                className="flex items-center justify-center gap-3 bg-[#fff] text-[#333] py-4 px-10 rounded-lg font-bold text-[1.09rem] cursor-pointer"
+              >
+                Logout
+              </button>
+            ) : (
+              <button
+                onClick={() => setIsLoggedIn(true)}
+                className="flex items-center justify-center gap-3 bg-[#fff] text-[#333] py-4 px-10 rounded-lg font-bold text-[1.09rem] cursor-pointer"
+              >
+                <FaUser /> Login
+              </button>
+            )}
           </div>
         </div>
       )}
