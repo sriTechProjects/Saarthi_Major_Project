@@ -70,7 +70,7 @@ const [gender, setGender] = useState("");
     try {
       const response = await axiosInstance.post("/saarthi/auth/signup", formData); 
       console.log("Registration Successful:", response.data);
-      alert("Registration Successful!");
+      alert("Registration Successful!");how
       navigate('/auth/login');
     } catch (error) {
       console.error("Registration Failed:", error.response?.data || error.message);
