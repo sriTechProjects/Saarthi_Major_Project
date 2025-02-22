@@ -86,7 +86,7 @@ const SellerLayout = () => {
         ${collapsed && !isMobile ? 'justify-center' : ''}
       `}
     >
-      <FaStore className="text-2xl text-indigo-600 shrink-0" />
+      <FaStore className="text-2xl text-sky shrink-0" />
       {(!collapsed || isMobile) && (
         <span className="font-bold text-xl text-gray-800">Saarthi</span>
       )}
@@ -105,7 +105,7 @@ const SellerLayout = () => {
           transition-all duration-200 group
           ${!isMobile && isCollapsed ? 'justify-center' : ''}
           ${isActive 
-            ? 'bg-gradient-to-r from-indigo-600 to-indigo-700 text-white shadow-md' 
+            ? 'bg-gradient-to-r from-sky to-sky text-white shadow-md' 
             : 'hover:bg-indigo-50 text-gray-700'
           }
         `}
@@ -118,7 +118,7 @@ const SellerLayout = () => {
             ${!isMobile && isCollapsed ? 'w-6 h-6' : 'w-5 h-5'}
             ${isActive 
               ? 'text-white' 
-              : 'text-gray-500 group-hover:text-indigo-600'
+              : 'text-gray-500 group-hover:text-sky'
             }
             transition-colors duration-200
           `} 
@@ -129,7 +129,7 @@ const SellerLayout = () => {
             text-sm font-medium
             ${isActive 
               ? 'text-white' 
-              : 'text-gray-700 group-hover:text-indigo-600'
+              : 'text-gray-700 group-hover:text-sky'
             }
             transition-colors duration-200
           `}>
@@ -207,7 +207,7 @@ const SellerLayout = () => {
         onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
         className="flex items-center gap-2 p-1 rounded-lg hover:bg-gray-100 transition-colors"
       >
-        <div className="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-medium">
+        <div className="w-8 h-8 rounded-full bg-sky text-white flex items-center justify-center font-medium">
           {getInitials(user.name)}
         </div>
         <div className="hidden md:block text-left">
@@ -299,10 +299,10 @@ const SellerLayout = () => {
           {!isCollapsed ? (
             <>
               <div className="flex flex-col gap-2 text-sm text-gray-500 mb-4">
-                <Link to="/terms" className="hover:text-indigo-600 transition-colors">
+                <Link to="/terms" className="hover:text-sky transition-colors">
                   Terms & Conditions
                 </Link>
-                <Link to="/privacy" className="hover:text-indigo-600 transition-colors">
+                <Link to="/privacy" className="hover:text-sky transition-colors">
                   Privacy Policy
                 </Link>
               </div>
@@ -389,7 +389,7 @@ const SellerLayout = () => {
         </header>
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-auto p-6">
+        <main className="flex-1 overflow-auto px-6 py-3">
           <Outlet />
         </main>
       </div>

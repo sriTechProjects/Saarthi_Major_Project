@@ -43,6 +43,7 @@ const signin = async (req, res) => {
       message: "Login successful.",
       role: user.constructor.modelName,
       userId: user._id,
+      userName: user.fullName
     });
   } catch (error) {
     res

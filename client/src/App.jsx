@@ -9,6 +9,7 @@ import FormLayout from "./layouts/FormsLayout";
 // customer components
 import CustomerHomePage from "./pages/customer/CustomerHomePage";
 import CustomerProductPage from "./pages/customer/CustomerProductPage";
+import CustomerProductList from "./pages/customer/CustomerProductList";
 
 // Import auth components
 import LoginForm from "./pages/forms/LoginForm";
@@ -25,6 +26,9 @@ import SellerProducts from "./pages/seller/SellerProducts";
 import SellerOrders from "./pages/seller/SellerOrders";
 import SellerAnalytics from "./pages/seller/SellerAnalytics";
 
+// import context
+import { UserProvider } from "./contexts/UserContext";
+
 const App = () => {
   const routes = createBrowserRouter([
     {
@@ -37,8 +41,12 @@ const App = () => {
         },
         {
           path: "product",
-          element: <CustomerProductPage/>
-        }
+          element: <CustomerProductPage />,
+        },
+        {
+          path: "product-list",
+          element: <CustomerProductList />,
+        },
       ],
     },
     // Auth routes
@@ -92,15 +100,17 @@ const App = () => {
         {
           path: "/seller/analytics",
           element: <SellerAnalytics />,
-        }
-      ]
+        },
+      ],
     },
   ]);
 
   return (
     <>
-      <Toaster position="top-center" />
-      <RouterProvider router={routes} />
+      <UserProvider>
+        <Toaster position="top-center" />
+        <RouterProvider router={routes} />
+      </UserProvider>
     </>
   );
 };

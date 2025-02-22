@@ -15,4 +15,11 @@ import SecondaryFormBtn from "../../components/form_components/SecondaryFormBtn"
 import RadioButtonGroup from "../../components/form_components/RadioButtonGroup";
 import DropdownComponent from "../../components/form_components/DropdownComponent";
 
-export { HeaderComponent, FooterComponent, ProductCategoryCardComponent, HeaderNavIcons, SolidButton, InputFieldComponent, PasswordFieldComponent, FormBtn, SecondaryFormBtn, RadioButtonGroup, DropdownComponent, ProductRatings, CartItem };  
+// chart
+import BarChart from "../../components/seller_components/ChartsComponents/BarChart";
+import DoughnutChart from "../../components/seller_components/ChartsComponents/DoughnutChart";
+
+// seller
+
+
+export { HeaderComponent, FooterComponent, ProductCategoryCardComponent, HeaderNavIcons, SolidButton, InputFieldComponent, PasswordFieldComponent, FormBtn, SecondaryFormBtn, RadioButtonGroup, DropdownComponent, ProductRatings, CartItem, BarChart, DoughnutChart };  
