@@ -8,7 +8,7 @@ const AddNewProductForm = ({ onClose, onSubmit }) => {
     description: "",
     unit: "",
     price: "",
-    actualPrice: "",
+    discount: "",
     status: "available",
     images: [],
   });
@@ -112,12 +112,12 @@ const AddNewProductForm = ({ onClose, onSubmit }) => {
 
           <div className="col-span-1">
             <label className="block text-sm font-medium mb-2">
-              Unit Actual Price (Rs.)
+              Discount (%)
             </label>
             <input
               type="number"
-              name="actualPrice"
-              value={formData.actualPrice}
+              name="discount"
+              value={formData.discount}
               onChange={handleChange}
               required
               className="w-full border px-3 py-2 rounded-md"
