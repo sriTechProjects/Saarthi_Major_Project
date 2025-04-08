@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { 
   MdDashboard, 
@@ -9,7 +9,6 @@ import {
   MdHelp,
   MdChevronLeft,
   MdChevronRight,
-  MdPerson,
   MdMenu,
   MdClose,
   MdSearch,

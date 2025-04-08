@@ -1,5 +1,5 @@
 import images from "../../utils/resource/ImageProvider.util";
-import React, { useState } from "react";
+import { useState } from "react";
 import { BsShop } from "../../utils/resource/IconsProvider.util";
 import axiosInstance from "../../utils/validator/axiosInstance"
 
@@ -15,10 +15,10 @@ import {
   MdEmail,
   FcGoogle,
   RiLockPasswordFill,
-  FaUserLock,
-  HiUserAdd,
   MdPhone,
 } from "../../utils/resource/IconsProvider.util";
+import { Link } from "react-router-dom";
+
 const SellerRegistration = () => {
   const [page, setPage] = useState(1);
   const [firstName, setFirstName] = useState("");
@@ -342,9 +342,9 @@ const SellerRegistration = () => {
 
           <p className="text-sm text-center text-primary-txt font-light">
             Already have an account?{" "}
-            <a href="/login" className="text-link font-medium">
+            <Link to="/auth/login" className="text-link font-medium">
               Login
-            </a>
+            </Link>
           </p>
         </form>
       </div>

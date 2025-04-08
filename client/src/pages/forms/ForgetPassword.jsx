@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   InputFieldComponent,
@@ -26,9 +26,6 @@ const ForgetPassword = () => {
         <span>
             <img src={images.logo} alt="logo" className="w-32" />
         </span>
-        <a href="/auth/login" className="text-link underline font-medium">
-            Create Account
-        </a>
     </div>
     <div className="w-full max-w-md bg-white rounded-lg p-6 flex flex-col gap-6">
       <header className="flex flex-col items-center gap-1">

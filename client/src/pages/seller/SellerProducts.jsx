@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import { products } from "../../utils/resource/DataProvider.util";
 import { GrUpdate } from "react-icons/gr";

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useUser } from "../../../contexts/UserContext";
 
@@ -33,7 +33,7 @@ const HeaderComponent = ({ toggleBasket }) => {
   const handleLogout = () => {
     setUser(null); // Clear user from context
     setIsDropdownOpen(false);
-    navigate("/auth/signin");
+    navigate("/auth/login");
   };
 
   return (
@@ -81,7 +81,7 @@ const HeaderComponent = ({ toggleBasket }) => {
             <SolidButton
               containsIcon={true}
               icon={<FaUser />}
-              onClick={() => navigate("/auth/signin")}
+              onClick={() => navigate("/auth/login")}
               text="Login"
             />
           )}
