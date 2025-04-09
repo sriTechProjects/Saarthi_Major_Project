@@ -1,4 +1,5 @@
-import { useState } from "react";
+import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useUser } from "../../../contexts/UserContext";
 
@@ -19,7 +20,7 @@ import {
   SolidButton,
 } from "../../../utils/resource/ComponentsProvider.util";
 
-import { formAvatar } from "../../../utils/validator/helper";
+import ProfileDropDown from "./ProfileDropDown";
 
 const HeaderComponent = ({ toggleBasket }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -35,6 +36,14 @@ const HeaderComponent = ({ toggleBasket }) => {
     setIsDropdownOpen(false);
     navigate("/auth/login");
   };
+
+
+
+  useEffect(() => {
+    setUser({
+      name: "Amrik Bhadra",
+    });
+  }, []);
 
   return (
     <>
@@ -59,24 +68,7 @@ const HeaderComponent = ({ toggleBasket }) => {
           </button>
 
           {user ? (
-            <div className="relative">
-              <button onClick={toggleDropdown} className="flex items-center gap-2">
-                <span className="w-8 h-8 rounded-full border flex items-center justify-center font-normal">
-                  {formAvatar(user.name)}
-                </span>
-                <span>{user.name}</span>
-              </button>
-              {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md border">
-                  <button
-                    onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 hover:bg-gray-200"
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
+            <ProfileDropDown toggleDropdown={toggleDropdown} user={user} handleLogout={handleLogout} isDropdownOpen={isDropdownOpen}/>
           ) : (
             <SolidButton
               containsIcon={true}
@@ -87,7 +79,10 @@ const HeaderComponent = ({ toggleBasket }) => {
           )}
         </div>
 
-        <button onClick={toggleMenu} className="flex md:hidden text-3xl text-[#333]">
+        <button
+          onClick={toggleMenu}
+          className="flex md:hidden text-3xl text-[#333]"
+        >
           <RxHamburgerMenu />
         </button>
       </div>
@@ -98,13 +93,20 @@ const HeaderComponent = ({ toggleBasket }) => {
             <RxCross1 className="text-white text-2xl" />
           </button>
           <div className="flex flex-col gap-20 w-full">
-            <a href="#" className="w-full text-center font-semibold text-xl flex items-center gap-6 justify-center">
+            <Link
+              to="/auth/seller-registration"
+              className="w-full text-center font-semibold text-xl flex items-center gap-6 justify-center"
+            >
               <FaStore className="text-[1.1rem]" /> Become a Seller
-            </a>
-            <a href="#" className="w-full text-center font-semibold text-xl flex items-center gap-6 justify-center">
+            </Link>
+            <Link
+              to="#"
+              className="w-full text-center font-semibold text-xl flex items-center gap-6 justify-center"
+            >
               <FaBasketShopping className="text-xl" /> Visit Basket
-            </a>
+            </Link>
             {user ? (
+              
               <button
                 onClick={handleLogout}
                 className="flex items-center justify-center gap-3 bg-[#fff] text-[#333] py-4 px-10 rounded-lg font-bold text-[1.09rem] cursor-pointer"
@@ -125,5 +127,9 @@ const HeaderComponent = ({ toggleBasket }) => {
     </>
   );
 };
+
+HeaderComponent.propTypes = {
+  toggleBasket: PropTypes.func.isRequired
+}
 
 export default HeaderComponent;

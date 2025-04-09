@@ -1,11 +1,10 @@
-import React from "react";
+import PropTypes from "prop-types";
 import { ProductRatings } from "../../../utils/resource/ComponentsProvider.util";
 
-const RecommendedProducts = ({product}) => {
+const RecommendedProducts = ({ product }) => {
   return (
     <div
-      key={product.id}
-      className="min-w-[250px] bg-white rounded-lg shadow-md overflow-hidden p-3 flex flex-col gap-y-1"
+      className="min-w-[250px] bg-white rounded-lg shadow-card overflow-hidden p-3 flex flex-col gap-y-1"
     >
       <img
         src={product.img}
@@ -25,6 +24,16 @@ const RecommendedProducts = ({product}) => {
       </button>
     </div>
   );
+};
+
+RecommendedProducts.propTypes = {
+  product: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    img: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    rating: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default RecommendedProducts;

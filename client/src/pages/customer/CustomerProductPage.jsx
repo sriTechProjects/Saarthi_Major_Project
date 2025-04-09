@@ -1,4 +1,3 @@
-import React from "react";
 import {
   FaShoppingCart,
   FaBolt,
@@ -102,10 +101,12 @@ const CustomerProductPage = () => {
               <h3 className="text-[0.9rem] font-medium text-primary text-right mb-2">
                 Quantity
               </h3>
-              <select name="" id="" className="text-sm border p-1 rounded-md outline-none">
-                <option value="">
-                  Select qty
-                </option>
+              <select
+                name=""
+                id=""
+                className="text-sm border p-1 rounded-md outline-none"
+              >
+                <option value="">Select qty</option>
                 <option value="">50g</option>
                 <option value="">100g</option>
                 <option value="">200g</option>
@@ -159,7 +160,9 @@ const CustomerProductPage = () => {
                   <p className="text-[0.8rem] md:text-xs font-semibold text-primary-txt">
                     Delivery Time
                   </p>
-                  <p className="text-[1rem] md:text-sm font-medium text-[#8b8b8b]">8min</p>
+                  <p className="text-[1rem] md:text-sm font-medium text-[#8b8b8b]">
+                    8min
+                  </p>
                 </div>
               </div>
             </div>
@@ -183,8 +186,8 @@ const CustomerProductPage = () => {
           Recommended Products
         </h2>
         <div className="flex overflow-x-auto gap-4 py-3 scrollbar-hide">
-          {recommendedProducts.map((product) => (
-            <RecommendedProducts product={product}/>
+          {recommendedProducts.map((product, index) => (
+            <RecommendedProducts key={product.id || index} product={product} />
           ))}
         </div>
       </div>
