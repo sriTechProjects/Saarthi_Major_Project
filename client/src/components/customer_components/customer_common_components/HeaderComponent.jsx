@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useUser } from "../../../contexts/UserContext";
 
@@ -25,7 +25,7 @@ import ProfileDropDown from "./ProfileDropDown";
 const HeaderComponent = ({ toggleBasket }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const { user, setUser } = useUser();
+  const { user, setUser } = useUser({});
   const navigate = useNavigate();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -38,12 +38,6 @@ const HeaderComponent = ({ toggleBasket }) => {
   };
 
 
-
-  useEffect(() => {
-    setUser({
-      name: "Amrik Bhadra",
-    });
-  }, []);
 
   return (
     <>
