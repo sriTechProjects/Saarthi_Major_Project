@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -17,7 +17,10 @@ import {
 import images from "../../utils/resource/ImageProvider.util";
 import axiosinstance from "../../utils/validator/axiosInstance";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
 const LoginForm = () => {
+  const { currentUser, loading, fetchUser, refreshLoginContext } =
+    useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -43,6 +46,9 @@ const LoginForm = () => {
       if (response.status === 200) {
         toast.success("Login successful!");
         console.log("User Data:", response.data);
+
+        await refreshLoginContext();
+
         navigate("/");
       }
     } catch (error) {

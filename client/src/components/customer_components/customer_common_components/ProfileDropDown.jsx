@@ -6,7 +6,12 @@ import { FiPackage } from "react-icons/fi";
 import { FaRegHeart } from "react-icons/fa";
 import PropTypes from "prop-types";
 
-const ProfileDropDown = ({ toggleDropdown, user, handleLogout, isDropdownOpen }) => {
+const ProfileDropDown = ({
+  toggleDropdown,
+  user,
+  handleLogout,
+  isDropdownOpen,
+}) => {
   const menuItems = [
     {
       label: "My Profile",
@@ -41,10 +46,15 @@ const ProfileDropDown = ({ toggleDropdown, user, handleLogout, isDropdownOpen })
     <>
       <div className="relative">
         <button onClick={toggleDropdown} className="flex items-center gap-2">
-          <span className="w-8 h-8 rounded-full border flex items-center justify-center font-normal">
-            {formAvatar(user.name)}
+          <span className="w-8 h-8 bg-gray-200 rounded-full border flex items-center justify-center font-normal">
+            {formAvatar(user.email)}
           </span>
-          <span>{user.name}</span>
+          <span className="text-sm text-gray-700">
+            {user.fullName.firstName}
+          </span>
+          <span className="text-sm text-gray-700">
+            {user.fullName.lastName}
+          </span>
         </button>
         {isDropdownOpen && (
           <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md border">
@@ -77,12 +87,12 @@ const ProfileDropDown = ({ toggleDropdown, user, handleLogout, isDropdownOpen })
 };
 
 ProfileDropDown.propTypes = {
-    toggleDropdown: PropTypes.func.isRequired,
-    user: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-    }).isRequired,
-    handleLogout: PropTypes.func.isRequired,
-    isDropdownOpen: PropTypes.bool.isRequired,
-  };
+  toggleDropdown: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+  }).isRequired,
+  handleLogout: PropTypes.func.isRequired,
+  isDropdownOpen: PropTypes.bool.isRequired,
+};
 
 export default ProfileDropDown;

@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { IoSearch, IoAdd } from "react-icons/io5";
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { FaRegStar } from "react-icons/fa";
 import AddNewProductForm from "../../components/seller_components/seller_product_components/AddNewProductForm";
 import DeleteProductModal from "../../components/seller_components/seller_product_components/DeleteProductModal";
-import EditProductDetails from "../../components/seller_components/seller_product_components/EditProductDetails"
+import EditProductDetails from "../../components/seller_components/seller_product_components/EditProductDetails";
 import { products as initialProducts } from "../../utils/resource/DataProvider.util";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -23,8 +24,9 @@ const SellerProducts = () => {
   const [editProduct, setEditProduct] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteProductId, setDeleteProductId] = useState(null);
-  const [products, setProducts] = useState(initialProducts);
-
+  const [products, setProducts] = useState([]);
+  const { currentUser, loading, fetchUser, refreshLoginContext } =
+    useContext(AuthContext);
   const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const displayedProducts = products.slice(
@@ -38,9 +40,32 @@ const SellerProducts = () => {
     setDeleteProductId(null);
   };
 
-  const handleEditProduct = () => {
-    
-  }
+  useEffect(() => {
+    fetchProductsBySellerId(currentUser?.id);
+  }, [currentUser?.id]);
+
+  const fetchProductsBySellerId = async (seller_id) => {
+    try {
+      const response = await fetch(
+        `/api/saarthi/product/seller/getProductsById/${seller_id}`
+      );
+
+      const contentType = response.headers.get("content-type");
+
+      if (!response.ok || !contentType?.includes("application/json")) {
+        throw new Error("Invalid response format");
+      }
+
+      const data = await response.json();
+
+      setProducts(Array.isArray(data.products) ? data.products : []);
+    } catch (error) {
+      setProducts([]);
+      // console.error("Error fetching products:");
+    }
+  };
+
+  const handleEditProduct = () => {};
 
   return (
     <div className="relative w-full border rounded-md shadow-sm bg-white mt-2">
@@ -74,8 +99,19 @@ const SellerProducts = () => {
       <table className="w-full border-collapse">
         <thead className="bg-[#f7f7f7] text-primary-text uppercase text-sm">
           <tr>
-            {["#", "Name", "Category", "Price (Rs).", "Unit", "Status", "Actions"].map((heading, index) => (
-              <th key={index} className="px-5 py-3 text-center font-medium text-sm">
+            {[
+              "#",
+              "Name",
+              "Category",
+              "Price (Rs).",
+              "Unit",
+              "Status",
+              "Actions",
+            ].map((heading, index) => (
+              <th
+                key={index}
+                className="px-5 py-3 text-center font-medium text-sm"
+              >
                 {heading}
               </th>
             ))}
@@ -85,13 +121,17 @@ const SellerProducts = () => {
         <tbody>
           {displayedProducts.map((product, index) => (
             <tr key={product.id} className="border-b transition text-sm">
-              <td className="py-3 px-5 text-center">{startIndex + index + 1}</td>
+              <td className="py-3 px-5 text-center">
+                {startIndex + index + 1}
+              </td>
               <td className="py-3 px-5 text-center">{product.name}</td>
               <td className="py-3 px-5 text-center">{product.category}</td>
               <td className="py-3 px-5 text-center">{product.price}</td>
               <td className="py-3 px-5 text-center">{product.unit}</td>
               <td className="py-3 px-5 text-center">
-                <p className={`w-fit mx-auto rounded-full px-2 py-1 ${getStatusColor(product.status)}`}>
+                <p
+                  className={`w-fit mx-auto rounded-full px-2 py-1 ${getStatusColor(product.status)}`}
+                >
                   {product.status}
                 </p>
               </td>
@@ -146,9 +186,13 @@ const SellerProducts = () => {
         >
           Previous
         </button>
-        <span className="text-sm">Page {currentPage} of {totalPages}</span>
+        <span className="text-sm">
+          Page {currentPage} of {totalPages}
+        </span>
         <button
-          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+          }
           disabled={currentPage === totalPages}
           className="px-4 py-2 bg-primary-btn text-white rounded-md disabled:bg-primary-bg disabled:text-primary-txt"
         >
@@ -164,14 +208,12 @@ const SellerProducts = () => {
         />
       )}
 
-      {
-        isEditFormOpen && (
-          <EditProductDetails
-            onClose={()=>setIsEditFormOpen(false)}
-            onSubmit={handleEditProduct}
-          />
-        )
-      }
+      {isEditFormOpen && (
+        <EditProductDetails
+          onClose={() => setIsEditFormOpen(false)}
+          onSubmit={handleEditProduct}
+        />
+      )}
 
       {/* Delete Confirmation Modal */}
       {isDeleteModalOpen && (

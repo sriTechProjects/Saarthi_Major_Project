@@ -31,14 +31,21 @@ const Basket = ({ isOpen, onClose, cartItems, finalPrice }) => {
         <div className="p-4 space-y-4 overflow-y-auto flex-1 hide-scrollbar">
           {cartItems.length > 0 ? (
             cartItems.map((item, index) => (
-              <CartItem index={index} img={item.img} name={item.name} price={item.price} actualPrice={item.actualPrice} quantity={item.quantity}/>
+              <CartItem
+                key={index}
+                index={index}
+                img={item.img}
+                name={item.name}
+                price={item.price}
+                actualPrice={item.actualPrice}
+                quantity={item.quantity}
+              />
             ))
           ) : (
             <p className="text-center text-gray-500">Your cart is empty.</p>
           )}
         </div>
 
-      
         {/* Checkout Footer - Stays at the bottom */}
         <div className="p-4 border-t flex justify-between items-center">
           <p className="text-lg font-semibold">Total: {finalPrice}</p>

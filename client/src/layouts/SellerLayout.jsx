@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
-import { 
-  MdDashboard, 
-  MdAnalytics, 
-  MdInventory, 
+import { useState, useEffect, useContext } from "react";
+import { Link, Outlet, useLocation } from "react-router-dom";
+import {
+  MdDashboard,
+  MdAnalytics,
+  MdInventory,
   MdShoppingCart,
   MdSettings,
   MdHelp,
@@ -17,8 +17,9 @@ import {
   MdLogout,
   MdAccountCircle,
   MdSettings as MdUserSettings,
-} from 'react-icons/md';
-import { FaStore } from 'react-icons/fa';
+} from "react-icons/md";
+import { FaStore } from "react-icons/fa";
+import { AuthContext } from "../contexts/AuthContext";
 
 const SellerLayout = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -26,12 +27,14 @@ const SellerLayout = () => {
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const location = useLocation();
+  const { currentUser, loading, fetchUser, refreshLoginContext } =
+    useContext(AuthContext);
 
   // Mock user data (replace with actual user data)
   const user = {
-    name: "John Doe",
-    email: "john.doe@example.com",
-    role: "Seller"
+    name: `${currentUser?.fullName?.firstName} ${currentUser?.fullName?.lastName}`,
+    email: currentUser?.email,
+    role: currentUser?.role,
   };
 
   const [notifications] = useState([
@@ -48,13 +51,13 @@ const SellerLayout = () => {
   // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (!event.target.closest('.profile-dropdown')) {
+      if (!event.target.closest(".profile-dropdown")) {
         setIsProfileDropdownOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const sidebarItems = [
@@ -65,24 +68,24 @@ const SellerLayout = () => {
         { name: "Analytics", icon: MdAnalytics, path: "/seller/analytics" },
         { name: "Products", icon: MdInventory, path: "/seller/products" },
         { name: "Orders", icon: MdShoppingCart, path: "/seller/orders" },
-      ]
+      ],
     },
     {
       group: "Other",
       items: [
         { name: "Settings", icon: MdSettings, path: "/seller/settings" },
         { name: "Help", icon: MdHelp, path: "/seller/help" },
-      ]
-    }
+      ],
+    },
   ];
 
   const LogoSection = ({ collapsed, isMobile }) => (
-    <Link 
+    <Link
       to="/seller/"
       className={`
         h-16 flex items-center gap-3 px-4 border-b border-gray-200
         hover:bg-gray-50 transition-colors duration-200
-        ${collapsed && !isMobile ? 'justify-center' : ''}
+        ${collapsed && !isMobile ? "justify-center" : ""}
       `}
     >
       <FaStore className="text-2xl text-sky shrink-0" />
@@ -102,36 +105,33 @@ const SellerLayout = () => {
         className={`
           relative flex items-center gap-3 px-3 py-3 rounded-lg
           transition-all duration-200 group
-          ${!isMobile && isCollapsed ? 'justify-center' : ''}
-          ${isActive 
-            ? 'bg-gradient-to-r from-sky to-sky text-white shadow-md' 
-            : 'hover:bg-indigo-50 text-gray-700'
+          ${!isMobile && isCollapsed ? "justify-center" : ""}
+          ${
+            isActive
+              ? "bg-gradient-to-r from-sky to-sky text-white shadow-md"
+              : "hover:bg-indigo-50 text-gray-700"
           }
         `}
-        title={!isMobile && isCollapsed ? item.name : ''}
+        title={!isMobile && isCollapsed ? item.name : ""}
         onClick={() => isMobile && setIsMobileMenuOpen(false)}
       >
-        <Icon 
+        <Icon
           className={`
             shrink-0
-            ${!isMobile && isCollapsed ? 'w-6 h-6' : 'w-5 h-5'}
-            ${isActive 
-              ? 'text-white' 
-              : 'text-gray-500 group-hover:text-sky'
-            }
+            ${!isMobile && isCollapsed ? "w-6 h-6" : "w-5 h-5"}
+            ${isActive ? "text-white" : "text-gray-500 group-hover:text-sky"}
             transition-colors duration-200
-          `} 
+          `}
         />
-        
+
         {(!isCollapsed || isMobile) && (
-          <span className={`
+          <span
+            className={`
             text-sm font-medium
-            ${isActive 
-              ? 'text-white' 
-              : 'text-gray-700 group-hover:text-sky'
-            }
+            ${isActive ? "text-white" : "text-gray-700 group-hover:text-sky"}
             transition-colors duration-200
-          `}>
+          `}
+          >
             {item.name}
           </span>
         )}
@@ -145,26 +145,28 @@ const SellerLayout = () => {
 
   const getInitials = (name) => {
     return name
-      .split(' ')
-      .map(word => word[0])
-      .join('')
+      .split(" ")
+      .map((word) => word[0])
+      .join("")
       .toUpperCase();
   };
 
   const getPageTitle = () => {
     const path = location.pathname;
     const currentItem = sidebarItems
-      .flatMap(group => group.items)
-      .find(item => item.path === path);
+      .flatMap((group) => group.items)
+      .find((item) => item.path === path);
     return currentItem ? currentItem.name : "Dashboard";
   };
 
   const SearchBar = () => (
-    <div className={`
+    <div
+      className={`
       flex items-center
-      ${isSearchExpanded ? 'w-64' : 'w-10'}
+      ${isSearchExpanded ? "w-64" : "w-10"}
       transition-all duration-300
-    `}>
+    `}
+    >
       <div className="relative flex items-center w-full">
         <button
           onClick={() => setIsSearchExpanded(!isSearchExpanded)}
@@ -178,7 +180,7 @@ const SellerLayout = () => {
           className={`
             pl-10 pr-4 py-2 rounded-lg bg-gray-50
             focus:outline-none focus:ring-2 focus:ring-indigo-500/50
-            ${isSearchExpanded ? 'w-full opacity-100' : 'w-0 opacity-0'}
+            ${isSearchExpanded ? "w-full opacity-100" : "w-0 opacity-0"}
             transition-all duration-300
           `}
         />
@@ -188,7 +190,7 @@ const SellerLayout = () => {
 
   const NotificationDropdown = () => (
     <div className="relative">
-      <button 
+      <button
         className="p-2 rounded-lg hover:bg-gray-100 relative"
         onClick={() => setIsProfileDropdownOpen(false)}
       >
@@ -213,10 +215,12 @@ const SellerLayout = () => {
           <p className="text-sm font-medium text-gray-700">{user.name}</p>
           <p className="text-xs text-gray-500">{user.email}</p>
         </div>
-        <MdExpandMore className={`
+        <MdExpandMore
+          className={`
           w-5 h-5 text-gray-500 transition-transform duration-200
-          ${isProfileDropdownOpen ? 'rotate-180' : ''}
-        `} />
+          ${isProfileDropdownOpen ? "rotate-180" : ""}
+        `}
+        />
       </button>
 
       {isProfileDropdownOpen && (
@@ -225,7 +229,7 @@ const SellerLayout = () => {
             <p className="text-sm font-medium text-gray-700">{user.name}</p>
             <p className="text-xs text-gray-500">{user.email}</p>
           </div>
-          
+
           <div className="py-1">
             <Link
               to="/seller/profile"
@@ -265,11 +269,11 @@ const SellerLayout = () => {
   return (
     <div className="flex h-screen bg-gray-50">
       {/* Desktop Sidebar - hidden on mobile */}
-      <aside 
+      <aside
         className={`
           hidden lg:flex bg-white border-r border-gray-200 
           transition-all duration-300 ease-in-out flex-col
-          ${isCollapsed ? 'w-[80px]' : 'w-[250px]'}
+          ${isCollapsed ? "w-[80px]" : "w-[250px]"}
         `}
       >
         <LogoSection collapsed={isCollapsed} />
@@ -291,17 +295,22 @@ const SellerLayout = () => {
           ))}
         </div>
 
-        <div className={`
+        <div
+          className={`
           p-4 border-t border-gray-200 mt-auto
-          ${isCollapsed ? 'text-center' : ''}
-        `}>
+          ${isCollapsed ? "text-center" : ""}
+        `}
+        >
           {!isCollapsed ? (
             <>
               <div className="flex flex-col gap-2 text-sm text-gray-500 mb-4">
                 <Link to="/terms" className="hover:text-sky transition-colors">
                   Terms & Conditions
                 </Link>
-                <Link to="/privacy" className="hover:text-sky transition-colors">
+                <Link
+                  to="/privacy"
+                  className="hover:text-sky transition-colors"
+                >
                   Privacy Policy
                 </Link>
               </div>
@@ -321,14 +330,14 @@ const SellerLayout = () => {
           <div className="fixed inset-y-0 left-0 w-[280px] bg-white shadow-xl">
             <div className="flex items-center justify-between border-b border-gray-200">
               <LogoSection isMobile={true} />
-              <button 
+              <button
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="absolute right-4 p-2 rounded-lg hover:bg-gray-100"
               >
                 <MdClose className="w-6 h-6 text-gray-500" />
               </button>
             </div>
-            
+
             <div className="p-3">
               {sidebarItems.map((group, idx) => (
                 <div key={idx} className="mb-6">
@@ -359,7 +368,7 @@ const SellerLayout = () => {
             >
               <MdMenu className="w-6 h-6 text-gray-500" />
             </button>
-            
+
             {/* Desktop collapse button */}
             <button
               onClick={() => setIsCollapsed(!isCollapsed)}

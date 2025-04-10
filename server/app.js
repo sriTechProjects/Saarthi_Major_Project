@@ -6,6 +6,8 @@ const cookieParser = require("cookie-parser");
 
 const app = express();
 const authRoutes = require("./routes/auth/authRoutes");
+const commonRoutes = require("./routes/common/common");
+const ProductsRoutes = require("./routes/products/seller_Routes");
 
 // Connect to MongoDB
 connectDB();
@@ -24,6 +26,8 @@ app.use(express.json());
 
 // Routes
 app.use("/api/saarthi/auth", authRoutes);
+app.use("/api/saarthi/comm", commonRoutes);
+app.use("/api/saarthi/product", ProductsRoutes);
 
 const PORT = process.env.PORT || 8000;
 
