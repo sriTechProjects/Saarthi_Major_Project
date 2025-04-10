@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { IoAddOutline } from "react-icons/io5";
+import { CiEdit } from "react-icons/ci";
 
-const AddNewProductForm = ({ onClose, onSubmit }) => {
+
+const EditProductDetails = ({ onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
     name: "",
     category: "",
@@ -37,10 +38,10 @@ const AddNewProductForm = ({ onClose, onSubmit }) => {
       <div className="bg-white p-8 rounded-lg shadow-lg w-[600px] max-w-xl relative">
         <span className="flex gap-x-2 items-center mb-6">
           <div className="p-2 rounded-full bg-sky bg-opacity-[30%] border border-sky">
-            <IoAddOutline className="text-sky text-2xl font-semibold"/>
+            <CiEdit className="text-sky text-2xl font-semibold"/>
           </div>
           <h2 className="text-2xl font-medium text-left">
-            Add New Product
+            Edit New Product
           </h2>
         </span>
 
@@ -209,4 +210,4 @@ const AddNewProductForm = ({ onClose, onSubmit }) => {
   );
 };
 
-export default AddNewProductForm;
+export default EditProductDetails;

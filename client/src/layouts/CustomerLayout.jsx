@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import {useState} from 'react'
 import { Outlet } from 'react-router-dom'
 import { HeaderComponent, FooterComponent } from '../utils/resource/ComponentsProvider.util'
 import Basket from "../components/customer_components/customer_cart/Basket";

@@ -1,34 +1,50 @@
-import React, { useState } from "react";
-import { IoSearch } from "react-icons/io5";
-import { products } from "../../utils/resource/DataProvider.util";
-import { GrUpdate } from "react-icons/gr";
+import { useState } from "react";
+import { IoSearch, IoAdd } from "react-icons/io5";
+import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin7Line } from "react-icons/ri";
 import { FaRegStar } from "react-icons/fa";
-import { IoAdd } from "react-icons/io5";
 import AddNewProductForm from "../../components/seller_components/seller_product_components/AddNewProductForm";
+import DeleteProductModal from "../../components/seller_components/seller_product_components/DeleteProductModal";
+import EditProductDetails from "../../components/seller_components/seller_product_components/EditProductDetails"
+import { products as initialProducts } from "../../utils/resource/DataProvider.util";
 
 const ITEMS_PER_PAGE = 10;
-const getStatustColor = (status) => {
+
+const getStatusColor = (status) => {
   return status === "available"
     ? "bg-success-op text-success border border-success"
     : "bg-danger-op text-danger border border-danger";
 };
 
-
 const SellerProducts = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isEditFormOpen, setIsEditFormOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
+  const [editProduct, setEditProduct] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [deleteProductId, setDeleteProductId] = useState(null);
+  const [products, setProducts] = useState(initialProducts);
 
+  const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const displayedProducts = products.slice(
     startIndex,
     startIndex + ITEMS_PER_PAGE
   );
 
+  const handleDelete = () => {
+    setProducts((prev) => prev.filter((p) => p.id !== deleteProductId));
+    setIsDeleteModalOpen(false);
+    setDeleteProductId(null);
+  };
+
+  const handleEditProduct = () => {
+    
+  }
+
   return (
     <div className="relative w-full border rounded-md shadow-sm bg-white mt-2">
-      {/* Header with Search Bar */}
+      {/* Header */}
       <header className="py-3 px-5 flex justify-between items-center border-b">
         <h3 className="text-lg font-medium text-primary-text">Product List</h3>
         <div className="flex items-center gap-x-3">
@@ -44,7 +60,8 @@ const SellerProducts = () => {
           <button
             className="text-sm bg-primary-txt px-3 py-2 rounded-md text-white flex items-center gap-x-2"
             onClick={() => {
-              setIsFormOpen(!isFormOpen);
+              setEditProduct(null);
+              setIsFormOpen(true);
             }}
           >
             <IoAdd className="text-lg" />
@@ -55,57 +72,64 @@ const SellerProducts = () => {
 
       {/* Table */}
       <table className="w-full border-collapse">
-        {/* Table Head */}
         <thead className="bg-[#f7f7f7] text-primary-text uppercase text-sm">
           <tr>
-            {[
-              "#",
-              "Name",
-              "Category",
-              "Price (Rs).",
-              "Unit",
-              "Status",
-              "Actions",
-            ].map((heading, index) => (
-              <th
-                key={index}
-                className="px-5 py-3 text-center font-medium text-sm"
-              >
+            {["#", "Name", "Category", "Price (Rs).", "Unit", "Status", "Actions"].map((heading, index) => (
+              <th key={index} className="px-5 py-3 text-center font-medium text-sm">
                 {heading}
               </th>
             ))}
           </tr>
         </thead>
 
-        {/* Table Body */}
         <tbody>
           {displayedProducts.map((product, index) => (
             <tr key={product.id} className="border-b transition text-sm">
-              <td className="py-3 px-5 text-center">
-                {startIndex + index + 1}
-              </td>
+              <td className="py-3 px-5 text-center">{startIndex + index + 1}</td>
               <td className="py-3 px-5 text-center">{product.name}</td>
               <td className="py-3 px-5 text-center">{product.category}</td>
               <td className="py-3 px-5 text-center">{product.price}</td>
               <td className="py-3 px-5 text-center">{product.unit}</td>
-              <td className="py-3 px-5 text-center flex justify-center">
-                <p
-                  className={`w-fit rounded-full px-2  py-1 ${getStatustColor(
-                    product.status
-                  )}`}
-                >
+              <td className="py-3 px-5 text-center">
+                <p className={`w-fit mx-auto rounded-full px-2 py-1 ${getStatusColor(product.status)}`}>
                   {product.status}
                 </p>
               </td>
-              <td className="py-2 px-5 text-center space-x-2">
-                <button className="border p-2 rounded-md">
-                  <GrUpdate />
+              <td className="py-2 px-5 text-center space-x-2 flex justify-center">
+                {/* Edit */}
+                <button
+                  className="relative group border p-2 rounded-md"
+                  onClick={() => {
+                    setEditProduct(product);
+                    setIsEditFormOpen(true);
+                  }}
+                >
+                  <CiEdit />
+                  <span className="absolute hidden group-hover:block text-xs text-white bg-gray-800 px-2 py-1 rounded-md -top-8 left-1/2 -translate-x-1/2 z-10">
+                    Edit
+                  </span>
                 </button>
-                <button className="border p-2 rounded-md">
+
+                {/* Delete */}
+                <button
+                  className="relative group border p-2 rounded-md"
+                  onClick={() => {
+                    setDeleteProductId(product.id);
+                    setIsDeleteModalOpen(true);
+                  }}
+                >
                   <RiDeleteBin7Line />
+                  <span className="absolute hidden group-hover:block text-xs text-white bg-gray-800 px-2 py-1 rounded-md -top-8 left-1/2 -translate-x-1/2 z-10">
+                    Delete
+                  </span>
                 </button>
-                <button className="border p-2 rounded-md">
+
+                {/* Star */}
+                <button className="relative group border p-2 rounded-md">
                   <FaRegStar />
+                  <span className="absolute hidden group-hover:block text-xs text-white bg-gray-800 px-2 py-1 rounded-md -top-8 left-1/2 -translate-x-1/2 z-10">
+                    Star
+                  </span>
                 </button>
               </td>
             </tr>
@@ -113,7 +137,7 @@ const SellerProducts = () => {
         </tbody>
       </table>
 
-      {/* Pagination Footer */}
+      {/* Pagination */}
       <div className="flex justify-between items-center p-4 border-t">
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
@@ -122,13 +146,9 @@ const SellerProducts = () => {
         >
           Previous
         </button>
-        <span className="text-sm">
-          Page {currentPage} of {totalPages}
-        </span>
+        <span className="text-sm">Page {currentPage} of {totalPages}</span>
         <button
-          onClick={() =>
-            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-          }
+          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
           disabled={currentPage === totalPages}
           className="px-4 py-2 bg-primary-btn text-white rounded-md disabled:bg-primary-bg disabled:text-primary-txt"
         >
@@ -136,14 +156,29 @@ const SellerProducts = () => {
         </button>
       </div>
 
-      {isFormOpen ? (
+      {/* Add/Edit Form */}
+      {isFormOpen && (
         <AddNewProductForm
-          onClose={() => {
-            setIsFormOpen(false);
-          }}
+          onClose={() => setIsFormOpen(false)}
+          productToEdit={editProduct}
         />
-      ) : (
-        <></>
+      )}
+
+      {
+        isEditFormOpen && (
+          <EditProductDetails
+            onClose={()=>setIsEditFormOpen(false)}
+            onSubmit={handleEditProduct}
+          />
+        )
+      }
+
+      {/* Delete Confirmation Modal */}
+      {isDeleteModalOpen && (
+        <DeleteProductModal
+          onClose={() => setIsDeleteModalOpen(false)}
+          onConfirm={handleDelete}
+        />
       )}
     </div>
   );

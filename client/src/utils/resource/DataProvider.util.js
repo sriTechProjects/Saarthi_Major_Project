@@ -344,7 +344,50 @@ const orders = [
     payment: "Pending",
     status: "Processing"
   }
-]
+];
+
+const recommendedProducts = [
+    {
+      id: 1,
+      img: "https://imgs.search.brave.com/_4sKfyMOjKVAOQJ2p0eAJltX-qSviaK0lhCUooOYQKw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/aW1hZ2VzLmV4cHJl/c3MuY28udWsvaW1n/L2R5bmFtaWMvMTQv/NTkweC9zZWNvbmRh/cnkvYmFuYW5hcy01/OTI5NzA5LmpwZz9y/PTE3Mzg1MTExNzEz/OTA",
+      title: "Fresh Bananas",
+      price: "Rs. 80",
+      rating: 4.8,
+    },
+    {
+      id: 2,
+      img: "https://imgs.search.brave.com/E4B3F1kqjhub03Tnmzg7vrlOIJbuj9sfy1n1lD8HEFg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTM2/NTA5OTg2OS9waG90/by9zaXgtYXBwbGVz/LmpwZz9zPTYxMng2/MTImdz0wJms9MjAm/Yz1LeDlqTnZFRVQ1/RVJyN29ITkZNeHJv/VGM1NEsxTmdrN1Ix/Qlc5SUNYMlBVPQ",
+      title: "Red Apples",
+      price: "Rs. 80",
+      rating: 4.8,
+    },
+    {
+      id: 3,
+      img: "https://imgs.search.brave.com/Wim1vOJq_-t7HGc0xKxH52MndHQYQrQhdl1L85Hois8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzAyLzc5LzYwLzY5/LzM2MF9GXzI3OTYw/Njk5OV80Zkl0anYx/UkdqN29ndWp6UVNa/cUI5aGZrYnl6eEo0/ci5qcGc",
+      title: "Juicy Oranges",
+      price: "Rs. 80",
+      rating: 4.8,
+    },
+    {
+      id: 4,
+      img: "https://imgs.search.brave.com/EHArHypwlGrB5iYPJUV-IUMLvdZOA-ZWrpdRG_yVVYY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTEz/Mjk0MjYzMS9waG90/by93aGl0ZS1ncmFw/ZS5qcGc_cz02MTJ4/NjEyJnc9MCZrPTIw/JmM9VVZSUUw0a25Q/ZTh0SmE1aXJSdDN5/ZGF0Y1VrUThCSklK/WUtKejlJSDdYZz0",
+      title: "Green Grapes",
+      price: "Rs. 80",
+      rating: 4.8,
+    },
+  ];
+
+  const cities = [
+    "Mumbai",
+    "Delhi",
+    "Bengaluru",
+    "Pune",
+    "Chennai",
+    "Kolkata",
+    "Hyderabad",
+    "Ahmedabad",
+    "Jaipur",
+  ];
 
 
-export { cartItems, products, orders };
+export { cartItems, products, orders, cities, recommendedProducts };
