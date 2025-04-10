@@ -1,0 +1,87 @@
+[
+    {
+      "_id": "seller1",
+      "fullName": { "firstName": "Rajesh", "lastName": "Sharma" },
+      "email": "rajesh.sharma@example.com",
+      "password": "hashedpassword",
+      "phoneNo": "9876543210",
+      "shopName": "Rajesh Groceries",
+      "shopAddress": {
+        "street": "123 Market Road",
+        "landmark": "Near City Park",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "country": "India",
+        "zip": "400001"
+      },
+      "age": 45,
+      "gender": "male",
+      "twoFactorAuth": false,
+      "ratings": "4.5",
+      "reviews": "100"
+    },
+    {
+      "_id": "seller2",
+      "fullName": { "firstName": "Sunita", "lastName": "Patel" },
+      "email": "sunita.patel@example.com",
+      "password": "hashedpassword",
+      "phoneNo": "9876501234",
+      "shopName": "Sunita's Fresh Produce",
+      "shopAddress": {
+        "street": "456 Station Road",
+        "landmark": "Opp. Railway Station",
+        "city": "Ahmedabad",
+        "state": "Gujarat",
+        "country": "India",
+        "zip": "380001"
+      },
+      "age": 38,
+      "gender": "female",
+      "twoFactorAuth": false,
+      "ratings": "4.2",
+      "reviews": "50"
+    },
+    {
+      "_id": "seller3",
+      "fullName": { "firstName": "Vikram", "lastName": "Singh" },
+      "email": "vikram.singh@example.com",
+      "password": "hashedpassword",
+      "phoneNo": "9876540001",
+      "shopName": "Vikram's Essentials",
+      "shopAddress": {
+        "street": "789 Business Park",
+        "landmark": "Near Central Mall",
+        "city": "Kolkata",
+        "state": "West Bengal",
+        "country": "India",
+        "zip": "700001"
+      },
+      "age": 40,
+      "gender": "male",
+      "twoFactorAuth": false,
+      "ratings": "4.3",
+      "reviews": "70"
+    },
+    {
+      "_id": "seller4",
+      "fullName": { "firstName": "Anil", "lastName": "Reddy" },
+      "email": "anil.reddy@example.com",
+      "password": "hashedpassword",
+      "phoneNo": "9876554321",
+      "shopName": "Anil's Daily Needs",
+      "shopAddress": {
+        "street": "321 Commercial Lane",
+        "landmark": "Opp. Shopping Complex",
+        "city": "Hyderabad",
+        "state": "Telangana",
+        "country": "India",
+        "zip": "500001"
+      },
+      "age": 42,
+      "gender": "male",
+      "twoFactorAuth": false,
+      "ratings": "4.4",
+      "reviews": "65"
+    }
+  ]
+  

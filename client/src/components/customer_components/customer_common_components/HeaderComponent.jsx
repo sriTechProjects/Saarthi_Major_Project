@@ -33,7 +33,7 @@ const HeaderComponent = ({ toggleBasket }) => {
   const handleLogout = () => {
     setUser(null); // Clear user from context
     setIsDropdownOpen(false);
-    navigate("/auth/signin");
+    navigate("/auth/login");
   };
 
   return (
@@ -81,7 +81,7 @@ const HeaderComponent = ({ toggleBasket }) => {
             <SolidButton
               containsIcon={true}
               icon={<FaUser />}
-              onClick={() => navigate("/auth/signin")}
+              onClick={() => navigate("/auth/login")}
               text="Login"
             />
           )}

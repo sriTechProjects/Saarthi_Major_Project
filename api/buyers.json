@@ -1,0 +1,117 @@
+[
+    {
+      "_id": "buyer1",
+      "fullName": { "firstName": "Amit", "lastName": "Kumar" },
+      "email": "amit.kumar@example.com",
+      "password": "hashedpassword",
+      "phoneNo": "9123456789",
+      "address": {
+        "street": "789 Residential Area",
+        "landmark": "Near Community Center",
+        "city": "Delhi",
+        "state": "Delhi",
+        "country": "India",
+        "zip": "110001"
+      },
+      "age": 30,
+      "gender": "male",
+      "twoFactorAuth": false,
+      "orders": ["product1", "product4", "product9", "product7"]
+    },
+    {
+      "_id": "buyer2",
+      "fullName": { "firstName": "Priya", "lastName": "Verma" },
+      "email": "priya.verma@example.com",
+      "password": "hashedpassword",
+      "phoneNo": "9123456790",
+      "address": {
+        "street": "321 Apartment Block",
+        "landmark": "Near Metro Station",
+        "city": "Bangalore",
+        "state": "Karnataka",
+        "country": "India",
+        "zip": "560001"
+      },
+      "age": 27,
+      "gender": "female",
+      "twoFactorAuth": false,
+      "orders": ["product2", "product6", "product12", "product23"]
+    },
+    {
+      "_id": "buyer3",
+      "fullName": { "firstName": "Suresh", "lastName": "Verma" },
+      "email": "suresh.verma@example.com",
+      "password": "hashedpassword",
+      "phoneNo": "9123456700",
+      "address": {
+        "street": "456 Suburban Lane",
+        "landmark": "Near Local Market",
+        "city": "Chennai",
+        "state": "Tamil Nadu",
+        "country": "India",
+        "zip": "600001"
+      },
+      "age": 35,
+      "gender": "male",
+      "twoFactorAuth": false,
+      "orders": ["product1", "product13", "product3", "product11", "product16"]
+    },
+    {
+      "_id": "buyer4",
+      "fullName": { "firstName": "Anjali", "lastName": "Gupta" },
+      "email": "anjali.gupta@example.com",
+      "password": "hashedpassword",
+      "phoneNo": "9123456711",
+      "address": {
+        "street": "987 Urban Residency",
+        "landmark": "Opp. Shopping Mall",
+        "city": "Pune",
+        "state": "Maharashtra",
+        "country": "India",
+        "zip": "411001"
+      },
+      "age": 29,
+      "gender": "female",
+      "twoFactorAuth": false,
+      "orders": ["product4", "product5", "product7", "product10", "product8", "product20"]
+    },
+    {
+      "_id": "buyer5",
+      "fullName": { "firstName": "Rohit", "lastName": "Singh" },
+      "email": "rohit.singh@example.com",
+      "password": "hashedpassword",
+      "phoneNo": "9123456722",
+      "address": {
+        "street": "555 Industrial Area",
+        "landmark": "Near Bus Stand",
+        "city": "Lucknow",
+        "state": "Uttar Pradesh",
+        "country": "India",
+        "zip": "226001"
+      },
+      "age": 33,
+      "gender": "male",
+      "twoFactorAuth": false,
+      "orders": ["product2", "product7", "product9", "product17"]
+    },
+    {
+      "_id": "buyer6",
+      "fullName": { "firstName": "Kavya", "lastName": "Nair" },
+      "email": "kavya.nair@example.com",
+      "password": "hashedpassword",
+      "phoneNo": "9123456733",
+      "address": {
+        "street": "777 Seaside Avenue",
+        "landmark": "Near Beach Park",
+        "city": "Kochi",
+        "state": "Kerala",
+        "country": "India",
+        "zip": "682001"
+      },
+      "age": 26,
+      "gender": "female",
+      "twoFactorAuth": false,
+      "orders": ["product5", "product8", "product11", "product19", "product24"]
+    }
+  ]
+  

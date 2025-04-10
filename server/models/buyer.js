@@ -6,7 +6,7 @@ const AddressSchema = new mongoose.Schema({
   city: { type: String, required: true },
   state: { type: String, required: true },
   country: { type: String, required: true },
-  zip: { type: String, required: true },  
+  zip: { type: String, required: true },
 });
 
 const BuyerSchema = new mongoose.Schema({
@@ -21,7 +21,7 @@ const BuyerSchema = new mongoose.Schema({
   age: { type: Number, required: true },
   gender: { type: String, enum: ["male", "female", "other"], required: true },
   twoFactorAuth: { type: Boolean, default: false },
-  orders: { type: Array, default: [] },
+  orders: [{ type: mongoose.Schema.Types.ObjectId}],
 });
 
 module.exports = mongoose.model("Buyer", BuyerSchema);
