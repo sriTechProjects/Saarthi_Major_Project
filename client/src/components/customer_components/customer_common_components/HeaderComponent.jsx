@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useUser } from "../../../contexts/UserContext";
 
 // Assets import
 import images from "../../../utils/resource/ImageProvider.util";
@@ -21,23 +20,23 @@ import {
 } from "../../../utils/resource/ComponentsProvider.util";
 
 import ProfileDropDown from "./ProfileDropDown";
+import { AuthContext } from "../../../contexts/AuthContext";
 
 const HeaderComponent = ({ toggleBasket }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const { user, setUser } = useUser({});
+  const { currentUser, loading, fetchUser, refreshLoginContext } =
+    useContext(AuthContext);
   const navigate = useNavigate();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
   const handleLogout = () => {
-    setUser(null); // Clear user from context
+    // setUser(null); // Clear user from context
     setIsDropdownOpen(false);
     navigate("/auth/login");
   };
-
-
 
   return (
     <>
@@ -61,8 +60,13 @@ const HeaderComponent = ({ toggleBasket }) => {
             />
           </button>
 
-          {user ? (
-            <ProfileDropDown toggleDropdown={toggleDropdown} user={user} handleLogout={handleLogout} isDropdownOpen={isDropdownOpen}/>
+          {currentUser ? (
+            <ProfileDropDown
+              toggleDropdown={toggleDropdown}
+              user={currentUser}
+              handleLogout={handleLogout}
+              isDropdownOpen={isDropdownOpen}
+            />
           ) : (
             <SolidButton
               containsIcon={true}
@@ -99,8 +103,7 @@ const HeaderComponent = ({ toggleBasket }) => {
             >
               <FaBasketShopping className="text-xl" /> Visit Basket
             </Link>
-            {user ? (
-              
+            {currentUser ? (
               <button
                 onClick={handleLogout}
                 className="flex items-center justify-center gap-3 bg-[#fff] text-[#333] py-4 px-10 rounded-lg font-bold text-[1.09rem] cursor-pointer"
@@ -123,7 +126,7 @@ const HeaderComponent = ({ toggleBasket }) => {
 };
 
 HeaderComponent.propTypes = {
-  toggleBasket: PropTypes.func.isRequired
-}
+  toggleBasket: PropTypes.func.isRequired,
+};
 
 export default HeaderComponent;

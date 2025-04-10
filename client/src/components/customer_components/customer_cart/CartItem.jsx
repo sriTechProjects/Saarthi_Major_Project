@@ -1,8 +1,8 @@
 import React from "react";
 
-const CartItem = ({index, img, name, price, actualPrice, quantity }) => {
+const CartItem = ({ index, img, name, price, actualPrice, quantity }) => {
   return (
-    <div key={index} className="flex items-center gap-3 border-b pb-3">
+    <div className="flex items-center gap-3 border-b pb-3">
       <img src={img} alt={name} className="w-14 h-14 rounded-md" />
       <div className="flex-1">
         <p className="text-sm font-semibold">{name}</p>

@@ -1,3 +1,11 @@
+import React from "react";
+
+export default function RecommendedProducts() {
+  return <div>RecommendedProducts</div>;
+}
+
+
+
 import PropTypes from "prop-types";
 import { ProductRatings } from "../../../utils/resource/ComponentsProvider.util";
 
@@ -36,3 +44,5 @@ RecommendedProducts.propTypes = {
 };
 
 export default RecommendedProducts;
+
+
