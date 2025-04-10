@@ -392,8 +392,8 @@ const CustomerProductList = () => {
         {/* Right Product Cards Container */}
         <div className="flex flex-col gap-y-2 max-h-[100vh]">
           <div className="flex flex-wrap gap-4 transition-all duration-300">
-            {currentProducts.map((prod) => (
-              <RecommendedProducts key={prod.id} prod={prod} />
+            {currentProducts.map((product) => (
+              <RecommendedProducts key={product.id} product={product} />
             ))}
           </div>
 
