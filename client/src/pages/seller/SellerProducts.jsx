@@ -8,6 +8,7 @@ import DeleteProductModal from "../../components/seller_components/seller_produc
 import EditProductDetails from "../../components/seller_components/seller_product_components/EditProductDetails";
 import { products as initialProducts } from "../../utils/resource/DataProvider.util";
 import { AuthContext } from "../../contexts/AuthContext";
+import axios from "axios";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -33,37 +34,46 @@ const SellerProducts = () => {
     startIndex,
     startIndex + ITEMS_PER_PAGE
   );
-
+  console.log(displayedProducts);
+  console.log(currentUser._id);
   const handleDelete = () => {
     setProducts((prev) => prev.filter((p) => p.id !== deleteProductId));
     setIsDeleteModalOpen(false);
     setDeleteProductId(null);
   };
 
-  useEffect(() => {
-    fetchProductsBySellerId(currentUser?.id);
-  }, [currentUser?.id]);
-
-  const fetchProductsBySellerId = async (seller_id) => {
+  const fetchProductsBySellerId = async () => {
     try {
-      const response = await fetch(
-        `/api/saarthi/product/seller/getProductsById/${seller_id}`
+      console.log("hey i am here!");
+      const res = await axios.get(
+        `http://localhost:8000/api/saarthi/product/seller/getProductsById/${currentUser?._id}`,
+        { withCredentials: true }
       );
 
-      const contentType = response.headers.get("content-type");
+      console.log("Response Data:", res);
 
-      if (!response.ok || !contentType?.includes("application/json")) {
-        throw new Error("Invalid response format");
+      if (res.data?.success && Array.isArray(res.data.products)) {
+        setProducts(res.data.products);
+      } else {
+        setProducts([]);
       }
-
-      const data = await response.json();
-
-      setProducts(Array.isArray(data.products) ? data.products : []);
     } catch (error) {
       setProducts([]);
-      // console.error("Error fetching products:");
+      console.error(
+        "Error fetching products:",
+        error.response ? error.response.data : error.message
+      );
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (currentUser?._id) {
+        await fetchProductsBySellerId();
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleEditProduct = () => {};
 
@@ -126,8 +136,8 @@ const SellerProducts = () => {
               </td>
               <td className="py-3 px-5 text-center">{product.name}</td>
               <td className="py-3 px-5 text-center">{product.category}</td>
-              <td className="py-3 px-5 text-center">{product.price}</td>
-              <td className="py-3 px-5 text-center">{product.unit}</td>
+              <td className="py-3 px-5 text-center">{product.unit_price}</td>
+              <td className="py-3 px-5 text-center">{product.unit_type}</td>
               <td className="py-3 px-5 text-center">
                 <p
                   className={`w-fit mx-auto rounded-full px-2 py-1 ${getStatusColor(product.status)}`}
