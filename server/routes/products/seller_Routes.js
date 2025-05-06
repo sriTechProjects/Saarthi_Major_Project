@@ -1,8 +1,9 @@
 const express = require("express");
-const { GetProductsBySellerId, AddNewProduct } = require("../../controllers/seller/GetProductsBySellerId");
+const { GetProductsBySellerId } = require("../../controllers/seller/GetProductsBySellerId");
+const { addProduct } = require("../../controllers/seller/createProduct");
 const router = express.Router();
 
 router.get("/seller/getProductsById/:seller_id", GetProductsBySellerId);
-router.post("/addProduct", AddNewProduct)
+router.post("/seller/create", addProduct)
 
 module.exports = router;

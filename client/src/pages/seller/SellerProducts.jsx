@@ -9,6 +9,7 @@ import EditProductDetails from "../../components/seller_components/seller_produc
 import { products as initialProducts } from "../../utils/resource/DataProvider.util";
 import { AuthContext } from "../../contexts/AuthContext";
 import NoData from "../../assets/images/NoData.svg";
+import axios from "axios";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -34,7 +35,8 @@ const SellerProducts = () => {
     startIndex,
     startIndex + ITEMS_PER_PAGE
   );
-
+  console.log(displayedProducts);
+  console.log(currentUser._id);
   const handleDelete = () => {
     setProducts((prev) => prev.filter((p) => p.id !== deleteProductId));
     setIsDeleteModalOpen(false);
@@ -43,22 +45,25 @@ const SellerProducts = () => {
 
   const fetchProductsBySellerId = async (seller_id) => {
     try {
-      const response = await fetch(
-        `/api/saarthi/product/seller/getProductsById/${seller_id}`
+      console.log("hey i am here!");
+      const res = await axios.get(
+        `http://localhost:8000/api/saarthi/product/seller/getProductsById/${currentUser?._id}`,
+        { withCredentials: true }
       );
 
-      const contentType = response.headers.get("content-type");
+      console.log("Response Data:", res);
 
-      if (!response.ok || !contentType?.includes("application/json")) {
-        throw new Error("Invalid response format");
+      if (res.data?.success && Array.isArray(res.data.products)) {
+        setProducts(res.data.products);
+      } else {
+        setProducts([]);
       }
-
-      const data = await response.json();
-
-      setProducts(Array.isArray(data.products) ? data.products : []);
     } catch (error) {
       setProducts([]);
-      // console.error("Error fetching products:");
+      console.error(
+        "Error fetching products:",
+        error.response ? error.response.data : error.message
+      );
     }
   };
 
