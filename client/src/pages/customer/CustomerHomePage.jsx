@@ -145,7 +145,7 @@ const CustomerHomePage = () => {
   ];
 
   useEffect(() => {
-    console.log("useEffect triggered", currentUser._id);
+    // console.log("useEffect triggered", currentUser._id);
     if (currentUser && currentUser._id) {
       console.log("Fetching recommendations for:", currentUser.userId);
       axios

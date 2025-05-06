@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { IoAddOutline } from "react-icons/io5";
+import axios from "axios"
 
 const AddNewProductForm = ({ onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
@@ -17,6 +18,7 @@ const AddNewProductForm = ({ onClose, onSubmit }) => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    
   };
 
   const handleImageUpload = (e) => {
@@ -27,9 +29,39 @@ const AddNewProductForm = ({ onClose, onSubmit }) => {
     setFormData({ ...formData, images: validFiles });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(formData);
+  
+    const form = new FormData();
+    form.append("name", formData.name);
+    form.append("category", formData.category);
+    form.append("description", formData.description);
+    form.append("unit", formData.unit);
+    form.append("price", formData.price);
+    form.append("discount", formData.discount);
+    form.append("status", formData.status);
+  
+    formData.images.forEach((img, index) => {
+      form.append("images", img); // assuming backend supports array of files as 'images'
+    });
+  
+    try {
+      const res = await axios.post(
+        "http://localhost:8000/api/saarthi/product/addProduct",
+        form,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("Product added:", res.data);
+      alert("Product successfully added!");
+      onClose(); // optionally close modal
+    } catch (error) {
+      console.error("Error adding product:", error);
+      alert("Something went wrong while submitting the form.");
+    }
   };
 
   return (
@@ -44,7 +76,7 @@ const AddNewProductForm = ({ onClose, onSubmit }) => {
           </h2>
         </span>
 
-        <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
+        <form className="grid grid-cols-2 gap-4">
           <div className="col-span-1">
             <label className="block text-sm font-medium mb-2">
               Product Name
@@ -172,6 +204,7 @@ const AddNewProductForm = ({ onClose, onSubmit }) => {
               Discard
             </button>
             <button
+              onClick={handleSubmit}
               type="submit"
               className="px-4 py-2 bg-blue-600 text-white rounded-md"
             >
