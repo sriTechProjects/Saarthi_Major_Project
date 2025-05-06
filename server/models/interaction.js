@@ -2,22 +2,18 @@ const mongoose = require('mongoose');
 
 const interactionSchema = new mongoose.Schema({
   buyer_id: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String, // changed from ObjectId to String
     ref: 'Buyer',
-    required: true
+    required: true,
   },
   product_id: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String, // changed from ObjectId to String
     ref: 'Product',
-    required: true
+    required: true,
   },
-  interaction_value: {
-    type: Number,
-    default: 1 
-  },
-  timestamp: {
-    type: Date,
-    default: Date.now
+  interaction: {
+    type: Number, // optional: add if you're using interaction field (1, 2, etc.)
+    default: 1
   }
 });
 

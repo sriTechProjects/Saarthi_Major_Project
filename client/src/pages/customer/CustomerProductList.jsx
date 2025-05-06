@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Range } from "react-range";
 import { FaAngleUp, FaStar } from "react-icons/fa";
+import { useParams } from "react-router-dom";
 // import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 import { LuFilter } from "react-icons/lu";
 import {
@@ -14,8 +15,11 @@ import {
   cities,
   recommendedProducts,
 } from "../../utils/resource/DataProvider.util";
+import { AuthContext } from "../../contexts/AuthContext";
+import axios from "axios";
 
 const CustomerProductList = () => {
+  const { currentUser } = useContext(AuthContext);
   const MIN = 0;
   const MAX = 200;
   const [filterValues, setFilterValues] = useState({
@@ -24,6 +28,8 @@ const CustomerProductList = () => {
     discounts: [],
     city: "",
   });
+  const { category } = useParams();
+  const [productList, setProductList] = useState([]);
   const [selectedCity, setSelectedCity] = useState("");
   const [searchedCity, setSearchedCity] = useState("");
   const [showCityMenu, openCityMenu] = useState(false);
@@ -42,13 +48,51 @@ const CustomerProductList = () => {
   // const [priceRange, setPriceRange] = useState([0, 200]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 10;
+  let productsPerPage = 8; // Number of products to show per page
+
+  // useEffect(() => {
+  //   console.log("useEffect triggered", currentUser._id);
+  //   if (currentUser && currentUser._id) {
+  //     console.log("Fetching category wise products for:", category);
+  //     axios
+  //       .get(`http://localhost:8000/api/saarthi/products/${category}`, {
+  //         userId: currentUser._id
+  //       })
+  //       .then((res) => {
+  //         console.log("Category Products:", res.data.data);
+  //         setProductList(res.data.data || []);
+  //       })
+  //       .catch((err) => {
+  //         console.error("Failed to fetch category wise products:", err);
+  //       });
+  //   }
+  // }, [currentUser]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8000/api/saarthi/products/${category}/${product_id}`);
+        const data = response.data?.data;
+        if (data) {
+          setProductDetails(data);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+  
+    fetchData();
+  }, [category]);
+  
+  useEffect(() => {
+    console.log("Product details updated:", productDetails);
+  }, [productDetails]);
 
   // Pagination logic
-  const totalPages = Math.ceil(recommendedProducts.length / productsPerPage);
+  const totalPages = Math.ceil(productList.length / productsPerPage);
   const indexOfLast = currentPage * productsPerPage;
   const indexOfFirst = indexOfLast - productsPerPage;
-  const currentProducts = recommendedProducts.slice(indexOfFirst, indexOfLast);
+  const currentProducts = productList.slice(indexOfFirst, indexOfLast);
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
@@ -62,7 +106,7 @@ const CustomerProductList = () => {
         {/* Left Filter Box */}
         <div
           className={`${
-            showFilter ? "w-[230px]" : "w-[40px]"
+            showFilter ? "w-[32%]" : "w-[40px]"
           } transition-all duration-300 sticky top-5 h-fit bg-white rounded-md flex flex-col shadow-sm`}
         >
           <div className="filter-header flex justify-between items-center p-3 border-b text-[#111]">

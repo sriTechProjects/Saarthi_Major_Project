@@ -7,7 +7,7 @@ const getProducts = async (req, res) => {
         console.log(category);
 
         // Get all products in the category
-        const products = await Product.find({ category }).populate('seller_id');
+        const products = await Product.find({ category });
 
         res.status(200).json({ 
             success: true, 
