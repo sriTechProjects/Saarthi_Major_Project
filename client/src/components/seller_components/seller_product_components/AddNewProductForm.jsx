@@ -67,7 +67,7 @@ const AddNewProductForm = ({ onClose, onSubmit }) => {
               value={formData.category}
               onChange={handleChange}
               required
-              className="w-full border px-3 py-2 rounded-md"
+              className="w-full border px-3 py-2 rounded-md focus:border-sky"
             />
           </div>
 
