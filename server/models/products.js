@@ -6,11 +6,12 @@ const productSchema = new mongoose.Schema({
     category: { type: String, required: true },
     unit_type: { type: String, required: true },
     unit_price: { type: Number, required: true },
-    status: { type: String, required: true, default: 'available', enum:['available', 'out of stock'] },
+    status: { type: String, required: true, default: 'available', enum: ['available', 'out of stock'] },
     ratings: { type: Number, min: 0, max: 5, default: 0 },
     reviews: { type: Number, default: 0 },
-    seller_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Seller', required: true },
+    seller_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Seller' },
     discount: { type: Number, default: 0 },
+    images: [{ type: String }], 
     comments: [
         {
             buyer_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
@@ -20,4 +21,4 @@ const productSchema = new mongoose.Schema({
     ],
 });
 
-module.exports = mongoose.model('Product', productSchema);
+module.exports = mongoose.model('Product', productSchema, 'Product');

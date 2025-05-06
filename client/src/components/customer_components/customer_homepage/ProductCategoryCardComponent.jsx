@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom"
 
 const ProductCategoryCardComponent = ({ title, image }) => {
   return (
@@ -8,7 +9,7 @@ const ProductCategoryCardComponent = ({ title, image }) => {
       </div>
       <div>
         <h3 className="text-sm font-semibold text-[#4d4d4d] mt-1">
-          <a href="/category/Vegetables">{title}</a>
+          <Link to={`/product-list/${title.toLowerCase()}`}>{title}</Link>
         </h3>
       </div>
     </div>

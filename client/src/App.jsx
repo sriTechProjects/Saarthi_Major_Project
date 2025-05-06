@@ -39,11 +39,11 @@ const App = () => {
           element: <CustomerHomePage />,
         },
         {
-          path: "product",
+          path: "product/:category/:product_id",
           element: <CustomerProductPage />,
         },
         {
-          path: "product-list",
+          path: "product-list/:category",
           element: <CustomerProductList />,
         },
       ],
