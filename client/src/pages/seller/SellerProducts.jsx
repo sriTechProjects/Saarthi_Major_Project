@@ -2,11 +2,12 @@ import { useContext, useEffect, useState } from "react";
 import { IoSearch, IoAdd } from "react-icons/io5";
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin7Line } from "react-icons/ri";
-import { FaRegStar } from "react-icons/fa";
+import { FaEye } from "react-icons/fa";
 import AddNewProductForm from "../../components/seller_components/seller_product_components/AddNewProductForm";
 import DeleteProductModal from "../../components/seller_components/seller_product_components/DeleteProductModal";
 import EditProductDetails from "../../components/seller_components/seller_product_components/EditProductDetails";
-import { products as initialProducts } from "../../utils/resource/DataProvider.util";
+import ProductDetailsModal from "../../components/seller_components/seller_product_components/ProductDetailsModal";
+// import { products as initialProducts } from "../../utils/resource/DataProvider.util";
 import { AuthContext } from "../../contexts/AuthContext";
 import NoData from "../../assets/images/NoData.svg";
 import axios from "axios";
@@ -23,27 +24,22 @@ const SellerProducts = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isEditFormOpen, setIsEditFormOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [editProduct, setEditProduct] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteProductId, setDeleteProductId] = useState(null);
   const [products, setProducts] = useState([]);
-  const { currentUser, loading, fetchUser, refreshLoginContext } =
-    useContext(AuthContext);
+  const [isProductDetailModalOpen, setIsProductDetailModalOpen] =
+    useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [editProduct, setEditProduct] = useState(null);
+  const { currentUser } = useContext(AuthContext);
   const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const displayedProducts = products.slice(
     startIndex,
     startIndex + ITEMS_PER_PAGE
   );
-  console.log(displayedProducts);
-  console.log(currentUser._id);
-  const handleDelete = () => {
-    setProducts((prev) => prev.filter((p) => p.id !== deleteProductId));
-    setIsDeleteModalOpen(false);
-    setDeleteProductId(null);
-  };
 
-  const fetchProductsBySellerId = async (seller_id) => {
+  const fetchProductsBySellerId = async () => {
     try {
       console.log("hey i am here!");
       const res = await axios.get(
@@ -68,8 +64,8 @@ const SellerProducts = () => {
   };
 
   useEffect(() => {
-    fetchProductsBySellerId(currentUser?.id);
-  }, [currentUser?.id]);
+    fetchProductsBySellerId();
+  }, []);
 
   const handleEditProduct = () => {};
 
@@ -127,14 +123,14 @@ const SellerProducts = () => {
 
           <tbody>
             {displayedProducts.map((product, index) => (
-              <tr key={product.id} className="border-b transition text-sm">
+              <tr key={product._id} className="border-b transition text-sm">
                 <td className="py-3 px-5 text-center">
                   {startIndex + index + 1}
                 </td>
                 <td className="py-3 px-5 text-center">{product.name}</td>
                 <td className="py-3 px-5 text-center">{product.category}</td>
-                <td className="py-3 px-5 text-center">{product.price}</td>
-                <td className="py-3 px-5 text-center">{product.unit}</td>
+                <td className="py-3 px-5 text-center">{product.unit_price}</td>
+                <td className="py-3 px-5 text-center">{product.unit_type}</td>
                 <td className="py-3 px-5 text-center">
                   <p
                     className={`w-fit mx-auto rounded-full px-2 py-1 ${getStatusColor(
@@ -163,7 +159,7 @@ const SellerProducts = () => {
                   <button
                     className="relative group border p-2 rounded-md"
                     onClick={() => {
-                      setDeleteProductId(product.id);
+                      setDeleteProductId(product._id);
                       setIsDeleteModalOpen(true);
                     }}
                   >
@@ -173,11 +169,17 @@ const SellerProducts = () => {
                     </span>
                   </button>
 
-                  {/* Star */}
-                  <button className="relative group border p-2 rounded-md">
-                    <FaRegStar />
+                  {/* view */}
+                  <button
+                    onClick={() => {
+                      setSelectedProduct(product);
+                      setIsProductDetailModalOpen(true);
+                    }}
+                    className="relative group border p-2 rounded-md"
+                  >
+                    <FaEye />
                     <span className="absolute hidden group-hover:block text-xs text-white bg-gray-800 px-2 py-1 rounded-md -top-8 left-1/2 -translate-x-1/2 z-10">
-                      Star
+                      View Details
                     </span>
                   </button>
                 </td>
@@ -221,12 +223,14 @@ const SellerProducts = () => {
       {isFormOpen && (
         <AddNewProductForm
           onClose={() => setIsFormOpen(false)}
+          fetchProductsBySellerId={fetchProductsBySellerId}
           productToEdit={editProduct}
         />
       )}
 
       {isEditFormOpen && (
         <EditProductDetails
+          editProduct={editProduct}
           onClose={() => setIsEditFormOpen(false)}
           onSubmit={handleEditProduct}
         />
@@ -236,7 +240,15 @@ const SellerProducts = () => {
       {isDeleteModalOpen && (
         <DeleteProductModal
           onClose={() => setIsDeleteModalOpen(false)}
-          onConfirm={handleDelete}
+          deleteProductId={deleteProductId}
+          fetchProductsBySellerId={fetchProductsBySellerId}
+        />
+      )}
+
+      {isProductDetailModalOpen && (
+        <ProductDetailsModal
+          onClose={() => setIsProductDetailModalOpen(false)}
+          selectedProduct={selectedProduct}
         />
       )}
     </div>

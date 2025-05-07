@@ -1,9 +1,12 @@
 const express = require("express");
 const { GetProductsBySellerId } = require("../../controllers/seller/GetProductsBySellerId");
 const { addProduct } = require("../../controllers/seller/createProduct");
+const { deleteProduct } = require("../../controllers/seller/DeleteProductById");
 const router = express.Router();
+const upload = require('../../config/multerSetup')
 
 router.get("/seller/getProductsById/:seller_id", GetProductsBySellerId);
-router.post("/seller/create", addProduct)
+router.post("/addProduct", upload.array("images", 5), addProduct)
+router.delete("/seller/deleteProductById/:product_id", deleteProduct)
 
 module.exports = router;

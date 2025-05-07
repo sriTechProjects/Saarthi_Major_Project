@@ -2,17 +2,21 @@ import { useState } from "react";
 import { CiEdit } from "react-icons/ci";
 
 
-const EditProductDetails = ({ onClose, onSubmit }) => {
+const EditProductDetails = ({ editProduct, onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
-    name: "",
-    category: "",
-    description: "",
-    unit: "",
-    price: "",
-    discount: "",
-    status: "available",
+    name: editProduct.name,
+    category: editProduct?.category,
+    description: editProduct?.description,
+    unit_type: editProduct?.unit_type,
+    unit_price: editProduct?.unit_price,
+    discount: editProduct?.discount,
+    status: editProduct?.status,
     images: [],
   });
+
+  editProduct.images.map((img)=>{
+    formData.images.push(img)
+  })
 
   const [showPreview, setShowPreview] = useState(false);
 
@@ -90,7 +94,7 @@ const EditProductDetails = ({ onClose, onSubmit }) => {
             <input
               type="text"
               name="unit"
-              value={formData.unit}
+              value={formData.unit_type}
               onChange={handleChange}
               required
               className="w-full border px-3 py-2 rounded-md"
@@ -104,7 +108,7 @@ const EditProductDetails = ({ onClose, onSubmit }) => {
             <input
               type="number"
               name="price"
-              value={formData.price}
+              value={formData.unit_price}
               onChange={handleChange}
               required
               className="w-full border px-3 py-2 rounded-md"

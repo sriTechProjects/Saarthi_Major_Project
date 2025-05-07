@@ -2,38 +2,28 @@ const Product = require('../../models/products');
 
 const addProduct = async (req, res) => {
     try {
-        const {
-            name,
-            description,
-            category,
-            unit_type,
-            unit_price,
-            status,
-            ratings,
-            reviews,
-            seller_id,
-            discount,
-            comments
-        } = req.body;
+        console.log("Files:", req.files); // should be an array
+        console.log("Body:", req.body);   // contains text fields
 
-        const newProduct = new Product({
-            name,
-            description,
-            category,
-            unit_type,
-            unit_price,
-            status,
-            ratings,
-            reviews,
-            seller_id,
-            discount,
-            comments
+        const imagePaths = req.files.map(file => file.filename);
+
+        const product = new Product({
+            name: req.body.name,
+            category: req.body.category,
+            description: req.body.description,
+            unit_type: req.body.unit_type,
+            unit_price: req.body.unit_price,
+            discount: req.body.discount,
+            status: req.body.status,
+            seller_id: req.body.seller_id,
+            images: imagePaths,
         });
 
-        const savedProduct = await newProduct.save();
-        res.status(201).json({ success: true, product: savedProduct });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        await product.save();
+        res.status(201).json({ message: "Product added", product });
+    } catch (err) {
+        console.error("Error adding product:", err);
+        res.status(500).json({ error: "Internal Server Error" });
     }
 };
 
