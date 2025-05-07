@@ -49,11 +49,14 @@ const LoginForm = () => {
 
         await refreshLoginContext();
 
-        navigate("/");
+        if(response.data.role === "Seller")
+          navigate("/seller")
+        else
+          navigate("/");
       }
     } catch (error) {
-      console.error("Login Error:", error.response?.data || error.message);
       toast.error(error.response?.data?.message || "Login failed! Try again.");
+      console.error("Login Error:", error.response?.data || error.message);
     }
   };
 

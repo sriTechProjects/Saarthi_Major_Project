@@ -1,4 +1,3 @@
-import React from 'react';
 import { FaArrowUpLong, FaArrowDownLong } from "react-icons/fa6";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 

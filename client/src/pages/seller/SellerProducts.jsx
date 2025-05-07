@@ -8,6 +8,8 @@ import DeleteProductModal from "../../components/seller_components/seller_produc
 import EditProductDetails from "../../components/seller_components/seller_product_components/EditProductDetails";
 import { products as initialProducts } from "../../utils/resource/DataProvider.util";
 import { AuthContext } from "../../contexts/AuthContext";
+import NoData from "../../assets/images/NoData.svg";
+import axios from "axios";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -33,37 +35,41 @@ const SellerProducts = () => {
     startIndex,
     startIndex + ITEMS_PER_PAGE
   );
-
+  console.log(displayedProducts);
+  console.log(currentUser._id);
   const handleDelete = () => {
     setProducts((prev) => prev.filter((p) => p.id !== deleteProductId));
     setIsDeleteModalOpen(false);
     setDeleteProductId(null);
   };
 
+  const fetchProductsBySellerId = async (seller_id) => {
+    try {
+      console.log("hey i am here!");
+      const res = await axios.get(
+        `http://localhost:8000/api/saarthi/product/seller/getProductsById/${currentUser?._id}`,
+        { withCredentials: true }
+      );
+
+      console.log("Response Data:", res);
+
+      if (res.data?.success && Array.isArray(res.data.products)) {
+        setProducts(res.data.products);
+      } else {
+        setProducts([]);
+      }
+    } catch (error) {
+      setProducts([]);
+      console.error(
+        "Error fetching products:",
+        error.response ? error.response.data : error.message
+      );
+    }
+  };
+
   useEffect(() => {
     fetchProductsBySellerId(currentUser?.id);
   }, [currentUser?.id]);
-
-  const fetchProductsBySellerId = async (seller_id) => {
-    try {
-      const response = await fetch(
-        `/api/saarthi/product/seller/getProductsById/${seller_id}`
-      );
-
-      const contentType = response.headers.get("content-type");
-
-      if (!response.ok || !contentType?.includes("application/json")) {
-        throw new Error("Invalid response format");
-      }
-
-      const data = await response.json();
-
-      setProducts(Array.isArray(data.products) ? data.products : []);
-    } catch (error) {
-      setProducts([]);
-      // console.error("Error fetching products:");
-    }
-  };
 
   const handleEditProduct = () => {};
 
@@ -96,109 +102,120 @@ const SellerProducts = () => {
       </header>
 
       {/* Table */}
-      <table className="w-full border-collapse">
-        <thead className="bg-[#f7f7f7] text-primary-text uppercase text-sm">
-          <tr>
-            {[
-              "#",
-              "Name",
-              "Category",
-              "Price (Rs).",
-              "Unit",
-              "Status",
-              "Actions",
-            ].map((heading, index) => (
-              <th
-                key={index}
-                className="px-5 py-3 text-center font-medium text-sm"
-              >
-                {heading}
-              </th>
-            ))}
-          </tr>
-        </thead>
-
-        <tbody>
-          {displayedProducts.map((product, index) => (
-            <tr key={product.id} className="border-b transition text-sm">
-              <td className="py-3 px-5 text-center">
-                {startIndex + index + 1}
-              </td>
-              <td className="py-3 px-5 text-center">{product.name}</td>
-              <td className="py-3 px-5 text-center">{product.category}</td>
-              <td className="py-3 px-5 text-center">{product.price}</td>
-              <td className="py-3 px-5 text-center">{product.unit}</td>
-              <td className="py-3 px-5 text-center">
-                <p
-                  className={`w-fit mx-auto rounded-full px-2 py-1 ${getStatusColor(product.status)}`}
+      {products.length > 0 ? (
+        <table className="w-full border-collapse">
+          <thead className="bg-[#f7f7f7] text-primary-text uppercase text-sm">
+            <tr>
+              {[
+                "#",
+                "Name",
+                "Category",
+                "Price (Rs).",
+                "Unit",
+                "Status",
+                "Actions",
+              ].map((heading, index) => (
+                <th
+                  key={index}
+                  className="px-5 py-3 text-center font-medium text-sm"
                 >
-                  {product.status}
-                </p>
-              </td>
-              <td className="py-2 px-5 text-center space-x-2 flex justify-center">
-                {/* Edit */}
-                <button
-                  className="relative group border p-2 rounded-md"
-                  onClick={() => {
-                    setEditProduct(product);
-                    setIsEditFormOpen(true);
-                  }}
-                >
-                  <CiEdit />
-                  <span className="absolute hidden group-hover:block text-xs text-white bg-gray-800 px-2 py-1 rounded-md -top-8 left-1/2 -translate-x-1/2 z-10">
-                    Edit
-                  </span>
-                </button>
-
-                {/* Delete */}
-                <button
-                  className="relative group border p-2 rounded-md"
-                  onClick={() => {
-                    setDeleteProductId(product.id);
-                    setIsDeleteModalOpen(true);
-                  }}
-                >
-                  <RiDeleteBin7Line />
-                  <span className="absolute hidden group-hover:block text-xs text-white bg-gray-800 px-2 py-1 rounded-md -top-8 left-1/2 -translate-x-1/2 z-10">
-                    Delete
-                  </span>
-                </button>
-
-                {/* Star */}
-                <button className="relative group border p-2 rounded-md">
-                  <FaRegStar />
-                  <span className="absolute hidden group-hover:block text-xs text-white bg-gray-800 px-2 py-1 rounded-md -top-8 left-1/2 -translate-x-1/2 z-10">
-                    Star
-                  </span>
-                </button>
-              </td>
+                  {heading}
+                </th>
+              ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            {displayedProducts.map((product, index) => (
+              <tr key={product.id} className="border-b transition text-sm">
+                <td className="py-3 px-5 text-center">
+                  {startIndex + index + 1}
+                </td>
+                <td className="py-3 px-5 text-center">{product.name}</td>
+                <td className="py-3 px-5 text-center">{product.category}</td>
+                <td className="py-3 px-5 text-center">{product.price}</td>
+                <td className="py-3 px-5 text-center">{product.unit}</td>
+                <td className="py-3 px-5 text-center">
+                  <p
+                    className={`w-fit mx-auto rounded-full px-2 py-1 ${getStatusColor(
+                      product.status
+                    )}`}
+                  >
+                    {product.status}
+                  </p>
+                </td>
+                <td className="py-2 px-5 text-center space-x-2 flex justify-center">
+                  {/* Edit */}
+                  <button
+                    className="relative group border p-2 rounded-md"
+                    onClick={() => {
+                      setEditProduct(product);
+                      setIsEditFormOpen(true);
+                    }}
+                  >
+                    <CiEdit />
+                    <span className="absolute hidden group-hover:block text-xs text-white bg-gray-800 px-2 py-1 rounded-md -top-8 left-1/2 -translate-x-1/2 z-10">
+                      Edit
+                    </span>
+                  </button>
+
+                  {/* Delete */}
+                  <button
+                    className="relative group border p-2 rounded-md"
+                    onClick={() => {
+                      setDeleteProductId(product.id);
+                      setIsDeleteModalOpen(true);
+                    }}
+                  >
+                    <RiDeleteBin7Line />
+                    <span className="absolute hidden group-hover:block text-xs text-white bg-gray-800 px-2 py-1 rounded-md -top-8 left-1/2 -translate-x-1/2 z-10">
+                      Delete
+                    </span>
+                  </button>
+
+                  {/* Star */}
+                  <button className="relative group border p-2 rounded-md">
+                    <FaRegStar />
+                    <span className="absolute hidden group-hover:block text-xs text-white bg-gray-800 px-2 py-1 rounded-md -top-8 left-1/2 -translate-x-1/2 z-10">
+                      Star
+                    </span>
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <div className="p-3 flex flex-col items-center justify-center w-full">
+          <img src={NoData} alt="" className="w-[20%]" />
+          {/* <h3>No Products</h3> */}
+        </div>
+      )}
 
       {/* Pagination */}
-      <div className="flex justify-between items-center p-4 border-t">
-        <button
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-          className="px-4 py-2 bg-primary-btn text-white rounded-md disabled:bg-primary-bg disabled:text-primary-txt"
-        >
-          Previous
-        </button>
-        <span className="text-sm">
-          Page {currentPage} of {totalPages}
-        </span>
-        <button
-          onClick={() =>
-            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-          }
-          disabled={currentPage === totalPages}
-          className="px-4 py-2 bg-primary-btn text-white rounded-md disabled:bg-primary-bg disabled:text-primary-txt"
-        >
-          Next
-        </button>
-      </div>
+      {products.length > 0 && (
+        <div className="flex justify-between items-center p-4 border-t">
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className="px-4 py-2 bg-primary-btn text-white rounded-md disabled:bg-primary-bg disabled:text-primary-txt"
+          >
+            Previous
+          </button>
+          <span className="text-sm">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 bg-primary-btn text-white rounded-md disabled:bg-primary-bg disabled:text-primary-txt"
+          >
+            Next
+          </button>
+        </div>
+      )}
 
       {/* Add/Edit Form */}
       {isFormOpen && (

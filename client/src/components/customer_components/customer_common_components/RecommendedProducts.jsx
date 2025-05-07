@@ -23,8 +23,9 @@ const RecommendedProducts = ({ product }) => {
         <ProductRatings rating={product.ratings} />
       </span>
       <div className="items-center flex gap-x-2">
-        <p className="text-base font-semibold text-primary">₹ {product.unit_price}</p>
-        <p className="text-sm text-gray-400 line-through">₹ 90</p>
+        <p className="text-base font-semibold text-primary">₹ {product.unit_price - (product.discount * product.unit_price)/100}</p>
+        <p className="text-sm text-gray-400 line-through">₹ {product.unit_price}</p>
+        <span className="text-sm text-gray-400 ">({product.discount}%)</span>
       </div>
       <button
         onClick={(e) => {
