@@ -50,43 +50,43 @@ const CustomerProductList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   let productsPerPage = 8; // Number of products to show per page
 
-  // useEffect(() => {
-  //   console.log("useEffect triggered", currentUser._id);
-  //   if (currentUser && currentUser._id) {
-  //     console.log("Fetching category wise products for:", category);
-  //     axios
-  //       .get(`http://localhost:8000/api/saarthi/products/${category}`, {
-  //         userId: currentUser._id
-  //       })
-  //       .then((res) => {
-  //         console.log("Category Products:", res.data.data);
-  //         setProductList(res.data.data || []);
-  //       })
-  //       .catch((err) => {
-  //         console.error("Failed to fetch category wise products:", err);
-  //       });
-  //   }
-  // }, [currentUser]);
+  useEffect(() => {
+    console.log("useEffect triggered", currentUser._id);
+    if (currentUser && currentUser._id) {
+      console.log("Fetching category wise products for:", category);
+      axios
+        .get(`http://localhost:8000/api/saarthi/products/${category}`, {
+          userId: currentUser._id
+        })
+        .then((res) => {
+          console.log("Category Products:", res.data.data);
+          setProductList(res.data.data || []);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch category wise products:", err);
+        });
+    }
+  }, [currentUser]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8000/api/saarthi/products/${category}/${product_id}`);
-        const data = response.data?.data;
-        if (data) {
-          setProductDetails(data);
-        }
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get(`http://localhost:8000/api/saarthi/products/${category}/${product_id}`);
+  //       const data = response.data?.data;
+  //       if (data) {
+  //         setProductDetails(data);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error:", error);
+  //     }
+  //   };
   
-    fetchData();
-  }, [category]);
+  //   fetchData();
+  // }, [category]);
   
-  useEffect(() => {
-    console.log("Product details updated:", productDetails);
-  }, [productDetails]);
+  // useEffect(() => {
+  //   console.log("Product details updated:", productDetails);
+  // }, [productDetails]);
 
   // Pagination logic
   const totalPages = Math.ceil(productList.length / productsPerPage);
