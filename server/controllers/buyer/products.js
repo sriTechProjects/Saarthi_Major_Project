@@ -7,8 +7,8 @@ const getProducts = async (req, res) => {
         console.log(category);
 
         // Get all products in the category
-        const products = await Product.find({ category });
-
+        const products = await Product.find({ category }).populate('seller_id');
+        console.log(products[0].seller_id.shopAddress.city)
         res.status(200).json({ 
             success: true, 
             data: products,
