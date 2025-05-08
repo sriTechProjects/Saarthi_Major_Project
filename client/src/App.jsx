@@ -27,6 +27,7 @@ import SellerAnalytics from "./pages/seller/SellerAnalytics";
 
 // import context
 import { UserProvider } from "./contexts/UserContext";
+import CustomerOrdersPage from "./pages/customer/CustomerOrdersPage";
 
 const App = () => {
   const routes = createBrowserRouter([
@@ -46,6 +47,10 @@ const App = () => {
           path: "product-list/:category",
           element: <CustomerProductList />,
         },
+        {
+          path: "myorders",
+          element: <CustomerOrdersPage/>
+        }
       ],
     },
     // Auth routes

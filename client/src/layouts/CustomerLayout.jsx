@@ -13,6 +13,7 @@ const CustomerLayout = () => {
   const [isBasketOpen, setIsBasketOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isOrderPlaced, setIsOrderPlaced] = useState(false)
+  
   console.log(isCheckoutOpen);
   return (
     <div className="bg-[#efefef]">
