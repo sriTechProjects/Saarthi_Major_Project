@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { X } from "lucide-react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -65,7 +66,7 @@ const ProductDetailsModal = ({ onClose, selectedProduct }) => {
             infiniteLoop
             autoPlay
             interval={3000}
-            className="rounded-xl"
+            className="rounded-xl overflow-hidden"
           >
             {prodImage.map((img, idx) => (
               <div key={idx}>
@@ -134,6 +135,28 @@ const ProductDetailsModal = ({ onClose, selectedProduct }) => {
       </div>
     </div>
   );
+};
+
+ProductDetailsModal.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  selectedProduct: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    category: PropTypes.string.isRequired,
+    unit_type: PropTypes.string.isRequired,
+    unit_price: PropTypes.number.isRequired,
+    discount: PropTypes.number.isRequired,
+    status: PropTypes.string.isRequired,
+    ratings: PropTypes.number.isRequired,
+    reviews: PropTypes.number.isRequired,
+    comments: PropTypes.arrayOf(
+      PropTypes.shape({
+        buyer_id: PropTypes.string.isRequired,
+        comment_desc: PropTypes.string.isRequired,
+        rating_given: PropTypes.number.isRequired,
+      })
+    ).isRequired,
+  }).isRequired,
 };
 
 export default ProductDetailsModal;

@@ -3,7 +3,8 @@ const path = require("path");
 const fs = require("fs");
 
 // Ensure the upload directory exists
-const uploadDir = path.join(__dirname, "../assets/uploads");
+const uploadDir = path.join(process.cwd(), "uploads/");
+console.log(uploadDir);
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
@@ -14,9 +15,9 @@ const storage = multer.diskStorage({
     cb(null, uploadDir);
   },
   filename: function (req, file, cb) {
-    const { seller_id, productId } = req.body;
+    const { seller_id } = req.body;
     const ext = path.extname(file.originalname);
-    const filename = `${seller_id}_product${ext}`;
+    const filename = `${Date.now()}_${seller_id}_product${ext}`;
     cb(null, filename);
   },
 });
@@ -38,7 +39,7 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 1 * 1024 * 1024 }, // 5MB limit
+  limits: { fileSize: 1 * 1024 * 1024 }, // 1MB limit
 });
 
 // Export upload middleware for use in routes

@@ -1,4 +1,3 @@
-import React from "react";
 import KpiCards from "../../components/seller_components/seller_dashboard_components/KpiCards";
 import {
   FaProductHunt,

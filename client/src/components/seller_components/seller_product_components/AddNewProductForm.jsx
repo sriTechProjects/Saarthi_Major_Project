@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import { IoAddOutline } from "react-icons/io5";
 import axios from "axios"
 import { AuthContext } from "../../../contexts/AuthContext";
-import { toast } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 
 const AddNewProductForm = ({ onClose, fetchProductsBySellerId }) => {
   const {currentUser} = useContext(AuthContext);

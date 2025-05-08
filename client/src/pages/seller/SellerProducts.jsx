@@ -67,8 +67,6 @@ const SellerProducts = () => {
     fetchProductsBySellerId();
   }, []);
 
-  const handleEditProduct = () => {};
-
   return (
     <div className="relative w-full border rounded-md shadow-sm bg-white mt-2">
       {/* Header */}
@@ -232,7 +230,8 @@ const SellerProducts = () => {
         <EditProductDetails
           editProduct={editProduct}
           onClose={() => setIsEditFormOpen(false)}
-          onSubmit={handleEditProduct}
+          fetchProductsBySellerId={fetchProductsBySellerId}
+
         />
       )}
 
