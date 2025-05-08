@@ -6,9 +6,14 @@ import {
 } from "../utils/resource/ComponentsProvider.util";
 import Basket from "../components/customer_components/customer_cart/Basket";
 import { cartItems } from "../utils/resource/DataProvider.util";
+import CheckoutComponent from "../components/customer_components/customer_payment_components/CheckoutComponent.jsx"
+import OrderPlaced from "../components/customer_components/customer_payment_components/OrderPlaced.jsx";
 
 const CustomerLayout = () => {
   const [isBasketOpen, setIsBasketOpen] = useState(false);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [isOrderPlaced, setIsOrderPlaced] = useState(false)
+  console.log(isCheckoutOpen);
   return (
     <div className="bg-[#efefef]">
       {/* Header Section */}
@@ -35,7 +40,21 @@ const CustomerLayout = () => {
         onClose={() => setIsBasketOpen(false)}
         cartItems={cartItems}
         finalPrice="Rs. 500"
+        onClick={()=> setIsCheckoutOpen(true)}
       />
+
+
+      {
+        isCheckoutOpen && (
+          <CheckoutComponent setIsCheckoutOpen={setIsCheckoutOpen} setIsOrderPlaced={setIsOrderPlaced}/>
+        )
+      }
+
+      {
+        isOrderPlaced && (
+          <OrderPlaced setIsOrderPlaced={setIsOrderPlaced}/>
+        )
+      }
     </div>
   );
 };

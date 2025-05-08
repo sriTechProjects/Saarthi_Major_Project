@@ -2,7 +2,7 @@ import React from "react";
 import { FaTimes } from "react-icons/fa"; // Close Icon
 import CartItem from "./CartItem";
 
-const Basket = ({ isOpen, onClose, cartItems, finalPrice }) => {
+const Basket = ({ isOpen, onClose, cartItems, finalPrice, onClick }) => {
   return (
     <>
       {/* Overlay */}
@@ -49,7 +49,10 @@ const Basket = ({ isOpen, onClose, cartItems, finalPrice }) => {
         {/* Checkout Footer - Stays at the bottom */}
         <div className="p-4 border-t flex justify-between items-center">
           <p className="text-lg font-semibold">Total: {finalPrice}</p>
-          <button className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-hover">
+          <button onClick={()=>{
+            onClose()
+            onClick()
+          }} className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-hover">
             Checkout
           </button>
         </div>
