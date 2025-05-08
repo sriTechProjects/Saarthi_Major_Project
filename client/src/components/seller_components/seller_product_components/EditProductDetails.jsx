@@ -1,20 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CiEdit } from "react-icons/ci";
+import axios from "axios";
+import toast from "react-hot-toast";
 
-
-const EditProductDetails = ({ onClose, onSubmit }) => {
+const EditProductDetails = ({
+  editProduct,
+  onClose,
+  fetchProductsBySellerId,
+}) => {
   const [formData, setFormData] = useState({
-    name: "",
-    category: "",
-    description: "",
-    unit: "",
-    price: "",
-    discount: "",
-    status: "available",
+    id: editProduct._id,
+    name: editProduct.name,
+    category: editProduct?.category,
+    description: editProduct?.description,
+    unit_type: editProduct?.unit_type,
+    unit_price: editProduct?.unit_price,
+    discount: editProduct?.discount,
+    status: editProduct?.status,
     images: [],
   });
 
   const [showPreview, setShowPreview] = useState(false);
+
+  // useEffect(() => {
+  //   // Populate images when the editProduct data is loaded
+  //   if (editProduct.images?.length) {
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       images: [...editProduct.images],
+  //     }));
+  //   }
+  // }, [editProduct]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -28,9 +44,29 @@ const EditProductDetails = ({ onClose, onSubmit }) => {
     setFormData({ ...formData, images: validFiles });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    try {
+      const response = await axios.put(
+        "http://localhost:8000/api/saarthi/product/editProduct",
+        formData
+      );
+
+      if (response.status === 201) {
+        toast.success("Product updated successfully!");
+        fetchProductsBySellerId();
+        onClose();
+      }
+    } catch (error) {
+      // Error - Show error message with toast
+      toast.error(
+        `Error: ${
+          error.response?.data?.message ||
+          error.message ||
+          "Something went wrong"
+        }`
+      );
+    }
   };
 
   return (
@@ -38,11 +74,9 @@ const EditProductDetails = ({ onClose, onSubmit }) => {
       <div className="bg-white p-8 rounded-lg shadow-lg w-[600px] max-w-xl relative">
         <span className="flex gap-x-2 items-center mb-6">
           <div className="p-2 rounded-full bg-sky bg-opacity-[30%] border border-sky">
-            <CiEdit className="text-sky text-2xl font-semibold"/>
+            <CiEdit className="text-sky text-2xl font-semibold" />
           </div>
-          <h2 className="text-2xl font-medium text-left">
-            Edit New Product
-          </h2>
+          <h2 className="text-2xl font-medium text-left">Edit New Product</h2>
         </span>
 
         <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
@@ -89,8 +123,8 @@ const EditProductDetails = ({ onClose, onSubmit }) => {
             <label className="block text-sm font-medium mb-2">Unit Type</label>
             <input
               type="text"
-              name="unit"
-              value={formData.unit}
+              name="unit_type"
+              value={formData.unit_type}
               onChange={handleChange}
               required
               className="w-full border px-3 py-2 rounded-md"
@@ -103,8 +137,8 @@ const EditProductDetails = ({ onClose, onSubmit }) => {
             </label>
             <input
               type="number"
-              name="price"
-              value={formData.price}
+              name="unit_price"
+              value={formData.unit_price}
               onChange={handleChange}
               required
               className="w-full border px-3 py-2 rounded-md"
@@ -176,7 +210,7 @@ const EditProductDetails = ({ onClose, onSubmit }) => {
               type="submit"
               className="px-4 py-2 bg-blue-600 text-white rounded-md"
             >
-              Add Product
+              Update Product
             </button>
           </div>
         </form>

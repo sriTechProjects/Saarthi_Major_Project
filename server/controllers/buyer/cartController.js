@@ -1,5 +1,6 @@
 const Cart = require('../../models/cart');
 const Product = require('../../models/products');
+const Order = require('../../models/orders')
 const Interaction = require('../../models/interaction'); 
 
 // GET /cart/:buyerId
@@ -93,4 +94,65 @@ exports.removeFromCart = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+exports.checkOut = async (req, res) => {
+  try {
+    const { checkoutData, cartItems, buyerId, totalPayable } = req.body;
+
+    if (!checkoutData || !checkoutData.address || !checkoutData.payment || !cartItems || !buyerId || !totalPayable) {
+      return res.status(400).json({ message: "Incomplete checkout data." });
+    }
+    console.log(checkoutData.payment.selectedMethod)
+    // Convert cartItems to order items with priceAtPurchase
+    const items = await Promise.all(cartItems.map(async (item) => {
+      const product = await Product.findById(item.productId._id);
+      if (!product) {
+        throw new Error(`Product not found: ${item._id}`);
+      }
+
+      await Interaction.findOneAndUpdate(
+        { buyer_id: buyerId, product_id: item.productId._id },
+        { $set: { interaction: 3 } },
+        { upsert: true, new: true }
+      );
+
+      const unitPrice = product.unit_price;
+      const discount = product.discount || 0;
+
+      const discountedPrice = unitPrice - (discount * unitPrice) / 100;
+      const totalPriceForItem = parseFloat((item.quantity * discountedPrice).toFixed(2));
+
+
+
+      return {
+        productId: product._id,
+        quantity: item.quantity,
+        priceAtPurchase: totalPriceForItem
+      };
+    }));
+
+    const order = new Order({
+      buyerId,
+      items,
+      totalPrice: checkoutData.payment.totalPayable,
+      shippingAddress: checkoutData.address,
+      paymentMethod: checkoutData.payment.selectedMethod,
+      paymentStatus: "pending"
+    });
+
+    const savedOrder = await order.save();
+
+    res.status(201).json({
+      message: "Order placed successfully",
+      orderId: savedOrder._id,
+      order: savedOrder
+    });
+
+  } catch (error) {
+    console.error("Checkout error:", error.message);
+    res.status(500).json({ message: error.message || "Server error during checkout." });
+  }
+};
+
+
 

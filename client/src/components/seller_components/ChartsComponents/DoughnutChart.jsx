@@ -16,7 +16,7 @@ const DoughnutChart = () => {
 
   // Sample Product Sales Data
   const data = {
-    labels: ["Product A", "Product B", "Product C", "Product D", "Product E"],
+    labels: ["Grapes", "Apple", "Banana", "Kiwi", "Dragon Fruit"],
     datasets: [
       {
         label: "Sales (Units)",

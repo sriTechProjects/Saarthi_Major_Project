@@ -67,7 +67,7 @@ import CartItem from "./CartItem";
 import axios from "axios";
 import { AuthContext } from "../../../contexts/AuthContext";
 
-const Basket = ({ isOpen, onClose }) => {
+const Basket = ({ isOpen, onClose, onClick }) => {
   const { currentUser } = useContext(AuthContext);
   const [cartItems, setCartItems] = useState([]);
   const [finalPrice, setFinalPrice] = useState(0);
@@ -143,7 +143,10 @@ const Basket = ({ isOpen, onClose }) => {
 
         <div className="p-4 border-t flex justify-between items-center">
           <p className="text-lg font-semibold">Total: ₹{finalPrice}</p>
-          <button className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-hover">
+          <button onClick={()=>{
+            onClose()
+            onClick()
+          }} className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-hover">
             Checkout
           </button>
         </div>

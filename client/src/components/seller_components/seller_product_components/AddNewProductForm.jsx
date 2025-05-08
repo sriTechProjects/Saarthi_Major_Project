@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { IoAddOutline } from "react-icons/io5";
 import axios from "axios"
+import { AuthContext } from "../../../contexts/AuthContext";
+import toast from 'react-hot-toast'
 
-const AddNewProductForm = ({ onClose, onSubmit }) => {
+const AddNewProductForm = ({ onClose, fetchProductsBySellerId }) => {
+  const {currentUser} = useContext(AuthContext);
   const [formData, setFormData] = useState({
     name: "",
     category: "",
@@ -32,17 +35,34 @@ const AddNewProductForm = ({ onClose, onSubmit }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
+    if (!currentUser?._id) {
+      alert("User not logged in");
+      return;
+    }
+  
+    if (
+      !formData.name ||
+      !formData.category ||
+      !formData.description ||
+      !formData.unit ||
+      !formData.price
+    ) {
+      alert("Please fill all required fields");
+      return;
+    }
+  
     const form = new FormData();
     form.append("name", formData.name);
     form.append("category", formData.category);
     form.append("description", formData.description);
-    form.append("unit", formData.unit);
-    form.append("price", formData.price);
+    form.append("unit_type", formData.unit); // ✅ backend expects unit_type
+    form.append("unit_price", formData.price); // ✅ backend expects unit_price
     form.append("discount", formData.discount);
     form.append("status", formData.status);
+    form.append("seller_id", currentUser._id); // ✅ required by backend
   
-    formData.images.forEach((img, index) => {
-      form.append("images", img); // assuming backend supports array of files as 'images'
+    formData.images.forEach((img) => {
+      form.append("images", img); // ✅ backend uses upload.array('images', ...)
     });
   
     try {
@@ -55,14 +75,17 @@ const AddNewProductForm = ({ onClose, onSubmit }) => {
           },
         }
       );
+  
       console.log("Product added:", res.data);
-      alert("Product successfully added!");
-      onClose(); // optionally close modal
+      toast.success("Product successfully added!");
+      fetchProductsBySellerId();
+      onClose();
     } catch (error) {
-      console.error("Error adding product:", error);
-      alert("Something went wrong while submitting the form.");
+      console.error("Error adding product:", error?.response?.data || error.message);
+      toast.error("Something went wrong while submitting the form.");
     }
   };
+  
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60">

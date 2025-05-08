@@ -52,6 +52,8 @@ import {
 import Basket from "../components/customer_components/customer_cart/Basket";
 import { cartItems } from "../utils/resource/DataProvider.util";
 import { AuthContext } from "../contexts/AuthContext";
+import CheckoutComponent from "../components/customer_components/customer_payment_components/CheckoutComponent.jsx"
+import OrderPlaced from "../components/customer_components/customer_payment_components/OrderPlaced.jsx";
 
 const CustomerLayout = () => {
   const [isBasketOpen, setIsBasketOpen] = useState(false);
@@ -81,6 +83,9 @@ const CustomerLayout = () => {
   );
   console.log(finalPrice)
 
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [isOrderPlaced, setIsOrderPlaced] = useState(false)
+  console.log(isCheckoutOpen);
   return (
     <div className="bg-[#efefef]">
       <header
@@ -106,7 +111,20 @@ const CustomerLayout = () => {
         onClose={() => setIsBasketOpen(false)}
         cartItems={cartItemsState} 
         finalPrice={finalPrice}
+        onClick={()=> setIsCheckoutOpen(true)}
       />
+
+      {
+        isCheckoutOpen && (
+          <CheckoutComponent setIsCheckoutOpen={setIsCheckoutOpen} setIsOrderPlaced={setIsOrderPlaced} cartItemsState={cartItemsState}/>
+        )
+      }
+
+      {
+        isOrderPlaced && (
+          <OrderPlaced setIsOrderPlaced={setIsOrderPlaced}/>
+        )
+      }
     </div>
   );
 };

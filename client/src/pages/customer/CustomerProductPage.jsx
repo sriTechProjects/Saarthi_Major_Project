@@ -64,7 +64,7 @@ const CustomerProductPage = () => {
         <div className="image-container lg:px-4 w-full lg:w-1/2 flex flex-col gap-3">
           <div className="upper w-full h-[55vh] bg-white rounded-md shadow-sm overflow-hidden">
             <img
-              src={"https://img.livestrong.com/-/clsd/getty/82965f93904649bba70ac8577b9335b5.jpg"}
+              src={"https://deyga.in/cdn/shop/articles/mangoes-cover-1.jpg?v=1617118328"}
               alt=""
               className="h-full w-full object-cover"
             />
@@ -78,7 +78,7 @@ const CustomerProductPage = () => {
                   className="bg-white w-1/3 h-32 rounded-md shadow-sm overflow-hidden"
                 >
                   <img
-                    src={"https://img.livestrong.com/-/clsd/getty/82965f93904649bba70ac8577b9335b5.jpg"}
+                    src={"https://deyga.in/cdn/shop/articles/mangoes-cover-1.jpg?v=1617118328"}
                     alt=""
                     className="h-full w-full object-cover"
                   />
