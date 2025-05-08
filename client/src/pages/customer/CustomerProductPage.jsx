@@ -10,8 +10,9 @@ import {
 import { ProductRatings } from "../../utils/resource/ComponentsProvider.util";
 import RecommendedProducts from "../../components/customer_components/customer_common_components/RecommendedProducts";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
 import axios from "axios";
 
 const CustomerProductPage = () => {
@@ -20,6 +21,7 @@ const CustomerProductPage = () => {
   const [recommendations, setRecommendations] = useState([]);
   const [shopAddress, setShopAddress] = useState({})
   const { category, product_id } = useParams();
+  const { currentUser } = useContext(AuthContext);
 
   const productImage = `../../assets/images/google.png`
 
@@ -27,10 +29,10 @@ const CustomerProductPage = () => {
     const fetchproductDetails = async () => {
       try {
         console.log(
-          `Fetching product for category: ${category}, ID: ${product_id}`
+          `Fetching product for category: ${category}, ID: ${product_id}, UserID: ${currentUser._id}`
         );
         const response = await axios.get(
-          `http://localhost:8000/api/saarthi/products/${category}/${product_id}`
+          `http://localhost:8000/api/saarthi/products/${category}/${product_id}?userId=${currentUser._id}`
         );
 
         if (response.data.data) {

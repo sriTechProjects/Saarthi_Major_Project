@@ -1,22 +1,78 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import SelectPaymentMethod from "./SelectPaymentMethod";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdPayments } from "react-icons/md";
 import { IoBagCheckOutline } from "react-icons/io5";
 import SelectOrderAddress from "./SelectOrderAddress";
 import OrderSummary from "./OrderSummary";
+import { AuthContext } from "../../../contexts/AuthContext";
+import axios from "axios";
 
-const CheckoutComponent = ({setIsCheckoutOpen, setIsOrderPlaced}) => {
+const CheckoutComponent = ({
+  setIsCheckoutOpen,
+  setIsOrderPlaced,
+  cartItemsState,
+}) => {
   const [step, setStep] = useState(1);
+  const [totalPayable, setTotalPayable] = useState(0);
+  const [checkoutData, setCheckoutData] = useState({
+    address: null,
+    payment: null,
+  });
+  const { currentUser } = useContext(AuthContext);
 
+  // // Move to step 2 after address is selected
+  // useEffect(() => {
+  //   if (checkoutData.address && step === 1) {
+  //     setStep(2);
+  //   }
+  // }, [checkoutData.address]);
+
+  // // Move to step 3 after payment method is selected
+  // useEffect(() => {
+  //   if (checkoutData.payment && step === 2) {
+  //     setStep(3);
+  //   }
+  // }, [checkoutData.payment]);
+
+  const handleAddressComplete = (data) => {
+    console.log("Inside handleAddressComplete, received:", data);
+    setCheckoutData((prev) => ({ ...prev, address: data }));
+  };
+
+  const handlePaymentComplete = (data) => {
+    console.log("Inside handlePaymentComplete, received:", data);
+    setCheckoutData((prev) => ({ ...prev, payment: data }));
+  };
+  console.log(cartItemsState);
   const stepTitles = ["Address", "Summary", "Payment Method"];
-  const icons = [<FaLocationDot />, <IoBagCheckOutline />, <MdPayments />,];
+  const icons = [<FaLocationDot />, <IoBagCheckOutline />, <MdPayments />];
+
+  const handleCheckOut = async () => {
+  // e.preventDefault();
+  try {
+    const payload = {
+      checkoutData: checkoutData,
+      cartItems: cartItemsState,  // Assuming each item has _id, quantity, and price
+      buyerId: currentUser._id, // Adjust if buyerId is stored elsewhere
+      totalPayable: totalPayable,
+    };
+
+    const response = await axios.post("http://localhost:8000/api/saarthi/cart/checkout", payload);
+    console.log("Checkout data sent successfully:", response.data);
+  } catch (error) {
+    console.error("Error sending checkout data:", error);
+  }
+};
+
 
   const handleNext = () => {
-    if (step < 3) setStep(step + 1);
-    else{
-        setIsCheckoutOpen(false);
-        setIsOrderPlaced(true);
+    if (step < 3) {
+      setStep(step + 1);
+    } else {
+      handleCheckOut();
+      setIsCheckoutOpen(false);
+      setIsOrderPlaced(true);
     }
   };
 
@@ -43,7 +99,9 @@ const CheckoutComponent = ({setIsCheckoutOpen, setIsOrderPlaced}) => {
                 </span>
                 <p
                   className={`${
-                    step === index + 1 ? "text-sky font-medium" : "text-gray-400"
+                    step === index + 1
+                      ? "text-sky font-medium"
+                      : "text-gray-400"
                   }`}
                 >
                   {title}
@@ -57,9 +115,21 @@ const CheckoutComponent = ({setIsCheckoutOpen, setIsOrderPlaced}) => {
         </nav>
 
         {/* Step Content */}
-        {step === 1 && <SelectOrderAddress />}
-        {step === 2 && <OrderSummary/>}
-        {step === 3 && <SelectPaymentMethod/>}
+        {step === 1 && (
+          <SelectOrderAddress handleAddressComplete={handleAddressComplete} />
+        )}
+        {step === 2 && (
+          <OrderSummary
+            cartItemsState={cartItemsState}
+            setTotalPayable={setTotalPayable}
+          />
+        )}
+        {step === 3 && (
+          <SelectPaymentMethod
+            totalPayable={totalPayable}
+            handlePaymentComplete={handlePaymentComplete}
+          />
+        )}
 
         {/* Step Navigation Buttons */}
         <div className="flex justify-between mt-6">

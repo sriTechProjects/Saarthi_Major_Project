@@ -38,7 +38,7 @@ def recommend():
     }
 
     # --- Content-Based Filtering ---
-    content_scores = compute_content_scores(buyers, products, interactions)
+    content_scores = compute_content_scores(buyers, products ,interactions)
 
     # --- Reinforcement Learning ---
     rl_scores = compute_rl_scores(buyers, products, interactions, alpha=0.5)

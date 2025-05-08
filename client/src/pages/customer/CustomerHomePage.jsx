@@ -147,7 +147,8 @@ const CustomerHomePage = () => {
   useEffect(() => {
     // console.log("useEffect triggered", currentUser._id);
     if (currentUser && currentUser._id) {
-      console.log("Fetching recommendations for:", currentUser.userId);
+      // console.log(currentUser._id);
+      console.log("Fetching recommendations for:", currentUser._id);
       axios
         .post("http://localhost:8000/api/saarthi/recommendations", {
           userId: currentUser._id

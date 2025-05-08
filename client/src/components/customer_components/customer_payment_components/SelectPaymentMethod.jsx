@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import QRCode from "react-qr-code";
 
-const SelectPaymentMethod = () => {
+const SelectPaymentMethod = ({ totalPayable, handlePaymentComplete }) => {
   const [selectedMethod, setSelectedMethod] = useState("UPI");
   const [upiId, setUpiId] = useState("amk.bhk@oksbi");
   const [cardDetails, setCardDetails] = useState({
@@ -10,9 +10,11 @@ const SelectPaymentMethod = () => {
     validTill: "",
     cvv: "",
   });
-
-  const amount = 499; 
-
+  const amount = totalPayable;
+  useEffect(() => {
+    handlePaymentComplete({selectedMethod, totalPayable});
+  }, [selectedMethod]);
+  // console.log(amount);
   const renderForm = () => {
     switch (selectedMethod) {
       case "UPI":
@@ -128,7 +130,10 @@ const SelectPaymentMethod = () => {
           {["UPI", "QR", "CARD", "COD"].map((method) => (
             <button
               key={method}
-              onClick={() => setSelectedMethod(method)}
+              onClick={() => {
+                setSelectedMethod(method);
+                // handlePaymentComplete({ method, totalPayable });
+              }}
               className={`p-3 text-left border rounded-md ${
                 selectedMethod === method
                   ? "bg-sky-100 border-sky text-sky-700 font-medium"

@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const SelectOrderAddress = () => {
+const SelectOrderAddress = ({ handleAddressComplete }) => {
   const [addresses, setAddresses] = useState([
     {
       id: 1,
@@ -44,6 +44,14 @@ const SelectOrderAddress = () => {
     alternateMobile: "",
     type: "Home",
   });
+
+  useEffect(()=>{
+    addresses.map((address)=>{
+      if (address.isActive) {
+        handleAddressComplete(address)
+      }
+    })
+  },[addresses])
 
   const handleSetAddressActive = (id) => {
     setAddresses((prev) =>
@@ -108,7 +116,11 @@ const SelectOrderAddress = () => {
               className={`w-[90%] rounded-md ${
                 address.isActive ? "border border-sky" : "border"
               } p-3 cursor-pointer relative`}
-              onClick={() => handleSetAddressActive(address.id)}
+              onClick={() => {
+                console.log("Clicked address:", address);
+                handleSetAddressActive(address.id);
+                handleAddressComplete(address);
+              }}
             >
               <button
                 onClick={(e) => {
