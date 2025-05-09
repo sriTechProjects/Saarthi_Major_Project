@@ -33,8 +33,8 @@ const OrderSummary = ({ cartItemsState, setTotalPayable }) => {
     0
   );
   const tax = Math.round(itemTotal * 0.1); // 10% tax
-  const deliveryCharge = 40;
-  const discount = 100;
+  const deliveryCharge = 20;
+  const discount = Math.round(itemTotal * 0.05);
   // const totalPayable = itemTotal + tax + deliveryCharge - discount;
   const totalPayable = useMemo(() => {
     return itemTotal + tax + deliveryCharge - discount;
@@ -75,7 +75,7 @@ const OrderSummary = ({ cartItemsState, setTotalPayable }) => {
           <div className="mt-4 text-sm text-gray-700 space-y-2 border-t pt-4">
             <div className="flex justify-between">
               <span>Item Total</span>
-              <span>₹{itemTotal}</span>
+              <span>₹{(itemTotal).toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
               <span>Taxes & Charges</span>
@@ -92,7 +92,7 @@ const OrderSummary = ({ cartItemsState, setTotalPayable }) => {
             <hr className="my-2" />
             <div className="flex justify-between font-semibold text-lg text-primary-text">
               <span>Amount to Pay</span>
-              <span className="text-sky">₹{totalPayable}</span>
+              <span className="text-sky">₹{(totalPayable).toFixed(2)}</span>
             </div>
           </div>
         </div>

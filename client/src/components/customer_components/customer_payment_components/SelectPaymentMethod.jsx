@@ -10,7 +10,7 @@ const SelectPaymentMethod = ({ totalPayable, handlePaymentComplete }) => {
     validTill: "",
     cvv: "",
   });
-  const amount = totalPayable;
+  const amount = (totalPayable).toFixed(2);
   useEffect(() => {
     handlePaymentComplete({selectedMethod, totalPayable});
   }, [selectedMethod]);

@@ -8,41 +8,7 @@ import dragon2 from "../../../assets/uploads/dragon2.jpg"
 import dragon3 from "../../../assets/uploads/dragon1.jpg"
 
 const ProductDetailsModal = ({ onClose, selectedProduct }) => {
-  //   const [product, setProduct] = useState({
-  //     name: "Dragon Fruit",
-  //     description: "A vibrant tropical fruit rich in antioxidants.",
-  //     category: "Fruits",
-  //     unit_type: "kg",
-  //     unit_price: 210,
-  //     status: "available",
-  //     ratings: 4.5,
-  //     reviews: 12,
-  //     discount: 12,
-  //     images: [
-  //       dragon1,
-  //       dragon2,
-  //       dragon3
-  //     ],
-  //     comments: [
-  //       {
-  //         buyer_id: "123",
-  //         comment_desc: "Very fresh and tasty!",
-  //         rating_given: 5,
-  //       },
-  //       {
-  //         buyer_id: "456",
-  //         comment_desc: "Good quality but a bit expensive.",
-  //         rating_given: 4,
-  //       },
-  //       {
-  //         buyer_id: "789",
-  //         comment_desc: "Excellent packaging and taste.",
-  //         rating_given: 5,
-  //       },
-  //     ],
-  //   });
-
-  const prodImage = [
+   const prodImage = [
     dragon1, dragon2, dragon3
   ]
 

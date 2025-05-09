@@ -67,6 +67,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { useContext } from "react";
 import axios from "axios";
+import toast from "react-hot-toast"
 
 const RecommendedProducts = ({ product }) => {
   const navigate = useNavigate();
@@ -100,9 +101,9 @@ const RecommendedProducts = ({ product }) => {
       });
 
       if (res.status === 200 || res.status === 201) {
-        alert("Product added to cart!");
+        toast.success("Product added to cart!");
       } else {
-        alert("Failed to add to cart.");
+        toast.error("Failed to add to cart.");
       }
     } catch (error) {
       console.error("Add to cart error:", error.response?.data || error.message);
@@ -126,9 +127,9 @@ const RecommendedProducts = ({ product }) => {
       </span>
       <div className="items-center flex gap-x-2">
         <p className="text-base font-semibold text-primary">
-          ₹ {product.unit_price - (product.discount * product.unit_price) / 100}
+          ₹ {(product.unit_price - (product.discount * product.unit_price) / 100).toFixed(2)}
         </p>
-        <p className="text-sm text-gray-400 line-through">₹ {product.unit_price}</p>
+        <p className="text-sm text-gray-400 line-through">₹ {(product.unit_price.toFixed(2))}</p>
         <span className="text-sm text-gray-400 ">({product.discount}%)</span>
       </div>
       <button

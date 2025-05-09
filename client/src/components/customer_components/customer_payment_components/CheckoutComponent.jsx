@@ -21,19 +21,6 @@ const CheckoutComponent = ({
   });
   const { currentUser } = useContext(AuthContext);
 
-  // // Move to step 2 after address is selected
-  // useEffect(() => {
-  //   if (checkoutData.address && step === 1) {
-  //     setStep(2);
-  //   }
-  // }, [checkoutData.address]);
-
-  // // Move to step 3 after payment method is selected
-  // useEffect(() => {
-  //   if (checkoutData.payment && step === 2) {
-  //     setStep(3);
-  //   }
-  // }, [checkoutData.payment]);
 
   const handleAddressComplete = (data) => {
     console.log("Inside handleAddressComplete, received:", data);
