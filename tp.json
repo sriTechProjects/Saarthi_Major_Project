@@ -1,0 +1,37 @@
+{
+  "_id": { "$oid": "681d194a69512629cd3ddfaa" },
+  "buyerId": { "$oid": "67f52d18cb33ff14bcfd1afb" },
+  "items": [
+    {
+      "productId": { "$oid": "67f7b67277d8f8e5e5578026" },
+      "quantity": { "$numberInt": "3" },
+      "priceAtPurchase": { "$numberDouble": "536.82" },
+      "_id": { "$oid": "681d194a69512629cd3ddfab" }
+    },
+    {
+      "productId": { "$oid": "67f7b67277d8f8e5e5578035" },
+      "quantity": { "$numberInt": "1" },
+      "priceAtPurchase": { "$numberDouble": "100.74" },
+      "_id": { "$oid": "681d194a69512629cd3ddfac" }
+    }
+  ],
+  "totalPrice": { "$numberDouble": "641.558" },
+  "shippingAddress": {
+    "name": "Srivaths Iyer",
+    "phoneNo": "9987551082",
+    "pinCode": "412105",
+    "locality": "Alandi",
+    "address": "F-2, GoodLuck Boys Hostel",
+    "city": "Pune",
+    "state": "Maharastra",
+    "landmark": "Near Neelam Hotel",
+    "alternateMobile": "7689854674",
+    "type": "Home"
+  },
+  "status": "placed",
+  "paymentMethod": "UPI",
+  "paymentStatus": "pending",
+  "orderDate": { "$date": { "$numberLong": "1746737482068" } },
+  "deliveryDate": { "$date": { "$numberLong": "1747083082068" } },
+  "__v": { "$numberInt": "0" }
+}

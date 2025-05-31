@@ -115,18 +115,14 @@
 
 
 import { useContext, useEffect, useState } from "react";
-
-// import components
 import { ProductCategoryCardComponent } from "../../utils/resource/ComponentsProvider.util";
 import RecommendedProducts from "../../components/customer_components/customer_common_components/RecommendedProducts";
 import { AuthContext } from "../../contexts/AuthContext";
-
-// import images
 import images from "../../utils/resource/ImageProvider.util";
-import axios from "axios"; // assuming you're using axios for API calls
+import axios from "axios";
 
 const CustomerHomePage = () => {
-  const { currentUser } = useContext(AuthContext); // ✅ Get currentUser from context
+  const { currentUser } = useContext(AuthContext);
   const [recommendedProducts, setRecommendedProducts] = useState([]);
 
   const categories = [
@@ -144,17 +140,14 @@ const CustomerHomePage = () => {
     { title: "Sweets", image: images.category_sweets },
   ];
 
+  // 👇 Fetch recommendations
   useEffect(() => {
-    // console.log("useEffect triggered", currentUser._id);
     if (currentUser && currentUser._id) {
-      // console.log(currentUser._id);
-      console.log("Fetching recommendations for:", currentUser._id);
       axios
         .post("http://localhost:8000/api/saarthi/recommendations", {
           userId: currentUser._id
         })
         .then((res) => {
-          console.log("Recommended Products:", res.data);
           setRecommendedProducts(res.data.recommendations || []);
         })
         .catch((err) => {
@@ -163,19 +156,38 @@ const CustomerHomePage = () => {
     }
   }, [currentUser]);
 
+  // 👇 Inject chatbot script dynamically
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://chatling.ai/js/embed.js";
+    script.async = true;
+    script.setAttribute("data-id", "3224383178");
+    script.id = "chatling-embed-script";
+
+    const configScript = document.createElement("script");
+    configScript.innerHTML = 'window.chtlConfig = { chatbotId: "3224383178" };';
+
+    document.body.appendChild(configScript);
+    document.body.appendChild(script);
+
+    return () => {
+      // Clean up on unmount
+      document.body.removeChild(script);
+      document.body.removeChild(configScript);
+    };
+  }, []);
+
   return (
     <>
-      {/* Browse category section */}
+      {/* Category section */}
       <section className="bg-white m-5 rounded-lg shadow-sm">
+        {/* ...category content... */}
         <div className="mx-auto w-[84vw] flex flex-col gap-4 py-8">
           <div className="flex justify-between items-center">
-            <div>
-              <h2 className="text-[#333333] text-xl font-semibold">
-                Browse by <span className="text-primary">Category</span>
-              </h2>
-            </div>
+            <h2 className="text-[#333333] text-xl font-semibold">
+              Browse by <span className="text-primary">Category</span>
+            </h2>
           </div>
-
           <div className="flex items-center mt-2 w-full">
             <div className="flex overflow-x-auto hide-scrollbar">
               <div className="hide-scrollbar flex gap-4 text-0 px-1.5 py-2">
@@ -192,17 +204,14 @@ const CustomerHomePage = () => {
         </div>
       </section>
 
-      {/* Recommended product section */}
+      {/* Recommended Products */}
       <section className="bg-white m-5 rounded-lg shadow-sm">
         <div className="mx-auto w-[84vw] flex flex-col gap-4 py-8">
           <div className="flex justify-between items-center">
-            <div>
-              <h2 className="text-[#333333] text-xl font-semibold">
-                <span className="text-primary">Recommended</span> Products
-              </h2>
-            </div>
+            <h2 className="text-[#333333] text-xl font-semibold">
+              <span className="text-primary">Recommended</span> Products
+            </h2>
           </div>
-
           <div className="flex items-center mt-2 w-full">
             <div className="flex overflow-x-auto hide-scrollbar">
               <div className="hide-scrollbar flex gap-4 text-0 px-1.5 py-2">

@@ -44,6 +44,34 @@ def build_user_profiles(buyers, interactions, item_feature_vectors):
             user_profiles_avg[buyer_id] = np.zeros(len(next(iter(item_feature_vectors.values()))))
     return user_profiles_avg
 
+# def build_user_profiles(buyers, interactions, item_feature_vectors):
+#     """
+#     Build user preference profiles using only products the user has actually purchased.
+#     Purchase is indicated by interaction value == 3.
+#     """
+#     user_profiles = {buyer['_id']: [] for buyer in buyers}
+    
+#     for inter in interactions:
+#         if inter.get('value') != 3:
+#             continue    
+#         buyer_id = inter['buyer_id']
+#         product_id = inter['product_id']
+#         if product_id in item_feature_vectors:
+#             user_profiles[buyer_id].append(item_feature_vectors[product_id])
+
+#     user_profiles_avg = {}
+#     feature_dim = len(next(iter(item_feature_vectors.values())))
+
+#     for buyer_id, vectors in user_profiles.items():
+#         if vectors:
+#             user_profiles_avg[buyer_id] = np.mean(vectors, axis=0)
+#         else:
+#             user_profiles_avg[buyer_id] = np.zeros(feature_dim)
+
+#     return user_profiles_avg
+
+
+
 def compute_content_scores(buyers, products, interactions):
     """
     Compute content-based recommendation scores R̂_ij = P_i^T X_j.
