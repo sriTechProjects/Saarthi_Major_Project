@@ -11,6 +11,7 @@ products_collection = db["Product"]
 
 app = Flask(__name__)
 OLLAMA_URL = "http://localhost:11434/api/generate"
+NODEJS_BACKEND_URL = "http://localhost:8000/api/saarthi/chat"
 
 PROMPT_TEMPLATE = """
 You are an AI support assistant for an e-commerce store called Saarthi.
@@ -48,62 +49,112 @@ def detect_intent(query):
 def chat():
     data = request.get_json()
     user_query = data.get("query")
-    chat_history = data.get("history", [])
-    buyer_id = data.get("buyer_id")  # Assume you get buyer_id with request
+    buyer_id = data.get("buyer_id")
 
     if not user_query or not buyer_id:
         return jsonify({"error": "Missing 'query' or 'buyer_id' in request"}), 400
 
-    # Check if user is asking about recent orders
-    if "order" in user_query.lower():
-        try:
-            recent_orders = list(
-    orders_collection.find({"buyerId": ObjectId(buyer_id)}).sort("orderDate", -1)
-)
+    try:
+        # Get chat history from Node.js backend
+        history_response = requests.get(f"{NODEJS_BACKEND_URL}/history/{buyer_id}")
 
-        except Exception as e:
-            return jsonify({"error": f"Invalid buyer_id or database error: {str(e)}"}), 400
-
-        if recent_orders:
-            orders_text = ""
-            for order in recent_orders:
-                for item in order["items"]:
-                    product = products_collection.find_one({"_id": item["productId"]})
-                    product_name = product.get("name", "Unknown Product")
-                    order_date = order.get("orderDate")
-                    formatted_date = order_date.strftime("%Y-%m-%d") if order_date else "Unknown Date"
-                    orders_text += f"- Order {order['_id']}: {product_name} x{item['quantity']} on {formatted_date}\n"
-            data_for_prompt = f"Here are your recent orders:\n{orders_text}\n\n"
+        if history_response.status_code == 200:
+            chat_history = history_response.json().get("history", [])
         else:
-            data_for_prompt = "You have no recent orders.\n\n"
-    else:
-        data_for_prompt = ""
+            chat_history = []
 
-    # Prepare prompt with context and injected data
-    full_prompt = f"{data_for_prompt}User query: {user_query}\nAnswer as Saarthi chatbot."
+        # Check if user is asking about recent orders
+        if "order" in user_query.lower():
+            try:
+                recent_orders = list(
+                    orders_collection.find({"buyerId": ObjectId(buyer_id)}).sort("orderDate", -1)
+                )
 
-    # Call Ollama
-    response = requests.post(OLLAMA_URL, json={
-        "model": "mistral",
-        "prompt": full_prompt,
-        "stream": False
-    })
+            except Exception as e:
+                return jsonify({"error": f"Invalid buyer_id or database error: {str(e)}"}), 400
 
-    if response.status_code != 200:
-        return jsonify({"error": "Failed to contact Ollama"}), 500
+            if recent_orders:
+                orders_text = ""
+                for order in recent_orders:
+                    for item in order["items"]:
+                        product = products_collection.find_one({"_id": item["productId"]})
+                        product_name = product.get("name", "Unknown Product")
+                        order_date = order.get("orderDate")
+                        formatted_date = order_date.strftime("%Y-%m-%d") if order_date else "Unknown Date"
+                        orders_text += f"- Order {order['_id']}: {product_name} x{item['quantity']} on {formatted_date}\n"
+                data_for_prompt = f"Here are your recent orders:\n{orders_text}\n\n"
+            else:
+                data_for_prompt = "You have no recent orders.\n\n"
+        else:
+            data_for_prompt = ""
 
-    result = response.json()
-    answer = result.get("response", "").strip()
+        # Prepare prompt with context and injected data
+        full_prompt = f"{data_for_prompt}User query: {user_query}\nAnswer as Saarthi chatbot."
 
-    updated_history = chat_history + [
-        {"role": "user", "content": user_query},
-        {"role": "assistant", "content": answer}
-    ]
+        # Call Ollama
+        response = requests.post(OLLAMA_URL, json={
+            "model": "mistral",
+            "prompt": full_prompt,
+            "stream": False
+        })
 
-    return jsonify({
-        "response": answer,
-        "history": updated_history
-    })
+        if response.status_code != 200:
+            return jsonify({"error": "Failed to contact Ollama"}), 500
+
+        result = response.json()
+        answer = result.get("response", "").strip()
+
+        # Save user message to Node.js backend
+        requests.post(f"{NODEJS_BACKEND_URL}/message", json={
+            "buyerId": buyer_id,
+            "role": "user",
+            "content": user_query
+        })
+
+        # Save assistant response to Node.js backend
+        requests.post(f"{NODEJS_BACKEND_URL}/message", json={
+            "buyerId": buyer_id,
+            "role": "assistant",
+            "content": answer
+        })
+
+        # Get updated history
+        updated_history_response = requests.get(f"{NODEJS_BACKEND_URL}/history/{buyer_id}")
+        if updated_history_response.status_code == 200:
+            updated_history = updated_history_response.json().get("history", [])
+        else:
+            updated_history = chat_history + [
+                {"role": "user", "content": user_query},
+                {"role": "assistant", "content": answer}
+            ]
+
+        return jsonify({
+            "response": answer,
+            "history": updated_history,
+            "buyer_id": buyer_id
+        })
+
+    except Exception as e:
+        return jsonify({"error": f"Error processing chat: {str(e)}"}), 500
+
+@app.route("/chat-simple", methods=["POST"])
+def chat_simple():
+    """
+    Simple chat endpoint that uses Node.js backend for processing and storage
+    """
+    data = request.get_json()
+
+    try:
+        # Forward the request to Node.js backend
+        response = requests.post(f"{NODEJS_BACKEND_URL}/process", json=data)
+
+        if response.status_code == 200:
+            return jsonify(response.json())
+        else:
+            return jsonify({"error": "Failed to process chat request"}), response.status_code
+
+    except Exception as e:
+        return jsonify({"error": f"Error connecting to backend: {str(e)}"}), 500
 
 @app.route("/")
 def home():

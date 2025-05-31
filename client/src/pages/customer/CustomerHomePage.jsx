@@ -117,6 +117,7 @@
 import { useContext, useEffect, useState } from "react";
 import { ProductCategoryCardComponent } from "../../utils/resource/ComponentsProvider.util";
 import RecommendedProducts from "../../components/customer_components/customer_common_components/RecommendedProducts";
+import ChatWidget from "../../components/customer_components/ChatWidget";
 import { AuthContext } from "../../contexts/AuthContext";
 import images from "../../utils/resource/ImageProvider.util";
 import axios from "axios";
@@ -156,26 +157,7 @@ const CustomerHomePage = () => {
     }
   }, [currentUser]);
 
-  // 👇 Inject chatbot script dynamically
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://chatling.ai/js/embed.js";
-    script.async = true;
-    script.setAttribute("data-id", "3224383178");
-    script.id = "chatling-embed-script";
-
-    const configScript = document.createElement("script");
-    configScript.innerHTML = 'window.chtlConfig = { chatbotId: "3224383178" };';
-
-    document.body.appendChild(configScript);
-    document.body.appendChild(script);
-
-    return () => {
-      // Clean up on unmount
-      document.body.removeChild(script);
-      document.body.removeChild(configScript);
-    };
-  }, []);
+  // Chatbot is now handled by the ChatWidget component
 
   return (
     <>
@@ -226,6 +208,9 @@ const CustomerHomePage = () => {
           </div>
         </div>
       </section>
+
+      {/* Custom Chat Widget */}
+      <ChatWidget />
     </>
   );
 };
