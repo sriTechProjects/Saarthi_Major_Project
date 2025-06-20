@@ -1,13 +1,14 @@
-// // import components
+// import { useContext, useEffect, useState } from "react";
 // import { ProductCategoryCardComponent } from "../../utils/resource/ComponentsProvider.util";
 // import RecommendedProducts from "../../components/customer_components/customer_common_components/RecommendedProducts";
-// import { recommendedProducts } from "../../utils/resource/DataProvider.util";
 // import { AuthContext } from "../../contexts/AuthContext";
-
-// // import images
 // import images from "../../utils/resource/ImageProvider.util";
+// import axios from "axios";
 
 // const CustomerHomePage = () => {
+//   const { currentUser } = useContext(AuthContext);
+//   const [recommendedProducts, setRecommendedProducts] = useState([]);
+
 //   const categories = [
 //     { title: "Fruits", image: images.category_fruits },
 //     { title: "Vegetables", image: images.category_vegetable },
@@ -22,50 +23,102 @@
 //     { title: "Beverages", image: images.category_beverages },
 //     { title: "Sweets", image: images.category_sweets },
 //   ];
-//   // const recommendedProducts = [
-//   //   {
-//   //     id: 1,
-//   //     img: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.sfimpex.co.in%2Ffresh-banana.htm&psig=AOvVaw1nt8fJM6p0WJYtCw96NzdO&ust=1744356085895000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCMiKk_n2zIwDFQAAAAAdAAAAABAE",
-//   //     title: "Fresh Bananas",
-//   //     price: "Rs. 80",
-//   //     rating: 4.8,
-//   //   },
-//   //   {
-//   //     id: 2,
-//   //     img: "https://imgs.search.brave.com/E4B3F1kqjhub03Tnmzg7vrlOIJbuj9sfy1n1lD8HEFg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTM2/NTA5OTg2OS9waG90/by9zaXgtYXBwbGVz/LmpwZz9zPTYxMng2/MTImdz0wJms9MjAm/Yz1LeDlqTnZFRVQ1/RVJyN29ITkZNeHJv/VGM1NEsxTmdrN1Ix/Qlc5SUNYMlBVPQ",
-//   //     title: "Red Apples",
-//   //     price: "Rs. 80",
-//   //     rating: 4.8,
-//   //   },
-//   //   {
-//   //     id: 3,
-//   //     img: "https://imgs.search.brave.com/Wim1vOJq_-t7HGc0xKxH52MndHQYQrQhdl1L85Hois8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzAyLzc5LzYwLzY5/LzM2MF9GXzI3OTYw/Njk5OV80Zkl0anYx/UkdqN29ndWp6UVNa/cUI5aGZrYnl6eEo0/ci5qcGc",
-//   //     title: "Juicy Oranges",
-//   //     price: "Rs. 80",
-//   //     rating: 4.8,
-//   //   },
-//   //   {
-//   //     id: 4,
-//   //     img: "https://imgs.search.brave.com/EHArHypwlGrB5iYPJUV-IUMLvdZOA-ZWrpdRG_yVVYY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTEz/Mjk0MjYzMS9waG90/by93aGl0ZS1ncmFw/ZS5qcGc_cz02MTJ4/NjEyJnc9MCZrPTIw/JmM9VVZSUUw0a25Q/ZTh0SmE1aXJSdDN5/ZGF0Y1VrUThCSklK/WUtKejlJSDdYZz0",
-//   //     title: "Green Grapes",
-//   //     price: "Rs. 80",
-//   //     rating: 4.8,
-//   //   },
-//   // ];
+
+//   const [selectedLanguage, setSelectedLanguage] = useState("en");
+
+//   const languages = [
+//     { code: "en", label: "English" },
+//     { code: "hi", label: "Hindi" },
+//     { code: "bn", label: "Bengali" },
+//     { code: "ta", label: "Tamil" },
+//   ];
+
+//   // Add state to track if greeting has been shown
+//   const [hasGreeted, setHasGreeted] = useState(false);
+
+//   // Fetch recommendations
+//   useEffect(() => {
+//     if (currentUser && currentUser._id) {
+//       axios
+//         .post("http://localhost:8000/api/saarthi/recommendations", {
+//           userId: currentUser._id,
+//         })
+//         .then((res) => {
+//           const recs = res.data.recommendations || [];
+//           setRecommendedProducts(recs);
+
+//           // Send greeting to chatbot
+//           if (!hasGreeted && recs.length > 0) {
+//             const greetingMsg = {
+//               type: "product_buttons",
+//               message:
+//                 "Hi there! 👋 Looking for something special today? Here are a few handpicked products we think you’ll love:",
+//               products: recs.slice(0, 5).map((p) => ({
+//                 name: p.name,
+//                 id: p.product_id,
+//               })),
+//             };
+
+//             setChatHistory([{ role: "assistant", content: greetingMsg }]);
+//             setHasGreeted(true);
+//           }
+//         })
+//         .catch((err) => {
+//           console.error("Failed to fetch recommended products:", err);
+//         });
+//     }
+//   }, [currentUser]);
+
+//   // 👇 Inject chatbot script dynamically
+//   // 👇 Chatbot state & logic
+//   const [chatOpen, setChatOpen] = useState(false);
+//   const [chatHistory, setChatHistory] = useState([]);
+//   const [userInput, setUserInput] = useState("");
+//   const [loading, setLoading] = useState(false);
+
+//   const handleSendMessage = async () => {
+//     if (!userInput.trim()) return;
+
+//     const newHistory = [...chatHistory, { role: "user", content: userInput }];
+//     setChatHistory(newHistory);
+//     setUserInput("");
+//     setLoading(true);
+
+//     try {
+//       const res = await axios.post("http://localhost:5001/chat", {
+//         query: userInput,
+//         history: newHistory,
+//         buyer_id: currentUser?._id,
+//       });
+
+//       const response = res.data?.response || "Sorry, something went wrong.";
+//       console.log(response);
+//       setChatHistory([...newHistory, { role: "assistant", content: response }]);
+//     } catch (err) {
+//       console.error("Chatbot error:", err);
+//       setChatHistory([
+//         ...newHistory,
+//         {
+//           role: "assistant",
+//           content: "Failed to get a response from Saarthi.",
+//         },
+//       ]);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 
 //   return (
 //     <>
-//       {/* Browse category section */}
+//       {/* Category section */}
 //       <section className="bg-white m-5 rounded-lg shadow-sm">
+//         {/* ...category content... */}
 //         <div className="mx-auto w-[84vw] flex flex-col gap-4 py-8">
 //           <div className="flex justify-between items-center">
-//             <div>
-//               <h2 className="text-[#333333] text-xl font-semibold">
-//                 Browse by <span className="text-primary">Category</span>
-//               </h2>
-//             </div>
+//             <h2 className="text-[#333333] text-xl font-semibold">
+//               Browse by <span className="text-primary">Category</span>
+//             </h2>
 //           </div>
-
 //           <div className="flex items-center mt-2 w-full">
 //             <div className="flex overflow-x-auto hide-scrollbar">
 //               <div className="hide-scrollbar flex gap-4 text-0 px-1.5 py-2">
@@ -82,23 +135,20 @@
 //         </div>
 //       </section>
 
-//       {/* Recomended product section */}
+//       {/* Recommended Products */}
 //       <section className="bg-white m-5 rounded-lg shadow-sm">
 //         <div className="mx-auto w-[84vw] flex flex-col gap-4 py-8">
 //           <div className="flex justify-between items-center">
-//             <div>
-//               <h2 className="text-[#333333] text-xl font-semibold">
-//                 <span className="text-primary">Recommended</span> Products
-//               </h2>
-//             </div>
+//             <h2 className="text-[#333333] text-xl font-semibold">
+//               <span className="text-primary">Recommended</span> Products
+//             </h2>
 //           </div>
-
 //           <div className="flex items-center mt-2 w-full">
 //             <div className="flex overflow-x-auto hide-scrollbar">
 //               <div className="hide-scrollbar flex gap-4 text-0 px-1.5 py-2">
 //                 {recommendedProducts.map((product, index) => (
 //                   <RecommendedProducts
-//                     key={product.id || index}
+//                     key={product.product_id || index}
 //                     product={product}
 //                   />
 //                 ))}
@@ -107,12 +157,105 @@
 //           </div>
 //         </div>
 //       </section>
+//       {/* Chatbot Floating Button */}
+//       <div className="fixed bottom-6 right-6 z-50">
+//         {!chatOpen ? (
+//           <button
+//             onClick={() => setChatOpen(true)}
+//             className="bg-primary text-white rounded-full p-4 shadow-lg hover:bg-opacity-80"
+//           >
+//             💬
+//           </button>
+//         ) : (
+//           <div className="w-80 h-96 bg-white rounded-xl shadow-xl flex flex-col overflow-hidden">
+//             <div className="bg-primary text-white p-3 flex justify-between items-center">
+//               <span className="font-semibold">Saarthi Chatbot</span>
+
+//               <button onClick={() => setChatOpen(false)} className="text-white">
+//                 ✖
+//               </button>
+//               <div className="fixed top-6 right-6 z-50">
+//                 <select
+//                   value={selectedLanguage}
+//                   onChange={(e) => setSelectedLanguage(e.target.value)}
+//                   className="border px-3 py-1 rounded-md text-sm"
+//                 >
+//                   {languages.map((lang) => (
+//                     <option key={lang.code} value={lang.code}>
+//                       {lang.label}
+//                     </option>
+//                   ))}
+//                 </select>
+//               </div>
+//             </div>
+//             <div className="flex-1 p-2 overflow-y-auto space-y-2">
+//               {chatHistory.map((msg, idx) => {
+//                 const isUser = msg.role === "user";
+//                 const isButtonMsg =
+//                   typeof msg.content === "object" &&
+//                   msg.content.type === "product_buttons";
+
+//                 return (
+//                   <div
+//                     key={idx}
+//                     className={`p-2 rounded-md max-w-[80%] ${
+//                       isUser
+//                         ? "bg-blue-100 self-end ml-auto"
+//                         : "bg-gray-100 self-start"
+//                     }`}
+//                   >
+//                     {isButtonMsg ? (
+//                       <>
+//                         <p className="mb-2 text-sm text-gray-800">
+//                           {msg.content.message}
+//                         </p>
+//                         <div className="flex flex-wrap gap-2">
+//                           {msg.content.products.map((prod, i) => (
+//                             <a
+//                               key={i}
+//                               href={`/product/${prod.id}`}
+//                               className="bg-primary text-white px-3 py-1 text-xs rounded hover:bg-opacity-90"
+//                             >
+//                               {prod.name}
+//                             </a>
+//                           ))}
+//                         </div>
+//                       </>
+//                     ) : (
+//                       msg.content
+//                     )}
+//                   </div>
+//                 );
+//               })}
+
+//               {loading && (
+//                 <div className="text-sm text-gray-400">Typing...</div>
+//               )}
+//             </div>
+//             <div className="p-2 border-t flex">
+//               <input
+//                 type="text"
+//                 value={userInput}
+//                 onChange={(e) => setUserInput(e.target.value)}
+//                 onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+//                 className="flex-1 border rounded-md px-2 py-1 text-sm"
+//                 placeholder="Ask something..."
+//               />
+//               <button
+//                 onClick={handleSendMessage}
+//                 className="ml-2 bg-primary text-white px-3 rounded-md text-sm"
+//               >
+//                 Send
+//               </button>
+//             </div>
+//           </div>
+//         )}
+//       </div>
 //     </>
 //   );
 // };
 
 // export default CustomerHomePage;
-
 
 import { useContext, useEffect, useState } from "react";
 import { ProductCategoryCardComponent } from "../../utils/resource/ComponentsProvider.util";
@@ -140,15 +283,45 @@ const CustomerHomePage = () => {
     { title: "Sweets", image: images.category_sweets },
   ];
 
-  // 👇 Fetch recommendations
+  const [hasGreeted, setHasGreeted] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [chatHistory, setChatHistory] = useState([]);
+  const [userInput, setUserInput] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const [selectedLanguage, setSelectedLanguage] = useState("en");
+  const languages = [
+    { code: "en", label: "English" },
+    { code: "hi", label: "Hindi" },
+    { code: "mr", label: "Marathi" },
+    { code: "ta", label: "Tamil" },
+  ];
+
   useEffect(() => {
     if (currentUser && currentUser._id) {
       axios
         .post("http://localhost:8000/api/saarthi/recommendations", {
-          userId: currentUser._id
+          userId: currentUser._id,
         })
         .then((res) => {
-          setRecommendedProducts(res.data.recommendations || []);
+          const recs = res.data.recommendations || [];
+          setRecommendedProducts(recs);
+          console.log(recs);
+          if (!hasGreeted && recs.length > 0) {
+            const greetingMsg = {
+              type: "product_buttons",
+              message:
+                "Hi there! 👋 Looking for something special today? Here are a few handpicked products we think you’ll love:",
+              products: recs.slice(0, 5).map((p) => ({
+                name: p.name,
+                id: p.product_id,
+                category: p.category
+              })),
+            };
+
+            setChatHistory([{ role: "assistant", content: greetingMsg }]);
+            setHasGreeted(true);
+          }
         })
         .catch((err) => {
           console.error("Failed to fetch recommended products:", err);
@@ -156,32 +329,39 @@ const CustomerHomePage = () => {
     }
   }, [currentUser]);
 
-  // 👇 Inject chatbot script dynamically
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://chatling.ai/js/embed.js";
-    script.async = true;
-    script.setAttribute("data-id", "3224383178");
-    script.id = "chatling-embed-script";
+  const handleSendMessage = async () => {
+    if (!userInput.trim()) return;
 
-    const configScript = document.createElement("script");
-    configScript.innerHTML = 'window.chtlConfig = { chatbotId: "3224383178" };';
+    const newHistory = [...chatHistory, { role: "user", content: userInput }];
+    setChatHistory(newHistory);
+    setUserInput("");
+    setLoading(true);
+    console.log(selectedLanguage);
+    try {
+      const res = await axios.post("http://localhost:5001/chat", {
+        query: userInput,
+        history: newHistory,
+        buyer_id: currentUser?._id,
+        language: selectedLanguage,
+      });
 
-    document.body.appendChild(configScript);
-    document.body.appendChild(script);
-
-    return () => {
-      // Clean up on unmount
-      document.body.removeChild(script);
-      document.body.removeChild(configScript);
-    };
-  }, []);
+      const response = res.data?.response || "Sorry, something went wrong.";
+      setChatHistory([...newHistory, { role: "assistant", content: response }]);
+    } catch (err) {
+      console.error("Chatbot error:", err);
+      setChatHistory([
+        ...newHistory,
+        { role: "assistant", content: "Failed to get a response from Saarthi." },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
       {/* Category section */}
       <section className="bg-white m-5 rounded-lg shadow-sm">
-        {/* ...category content... */}
         <div className="mx-auto w-[84vw] flex flex-col gap-4 py-8">
           <div className="flex justify-between items-center">
             <h2 className="text-[#333333] text-xl font-semibold">
@@ -226,6 +406,99 @@ const CustomerHomePage = () => {
           </div>
         </div>
       </section>
+
+      {/* Chatbot Floating Button */}
+      <div className="fixed bottom-6 right-6 z-50">
+        {!chatOpen ? (
+          <button
+            onClick={() => setChatOpen(true)}
+            className="bg-primary text-white rounded-full p-4 shadow-lg hover:bg-opacity-80"
+          >
+            💬
+          </button>
+        ) : (
+          <div className="w-80 h-96 bg-white rounded-xl shadow-xl flex flex-col overflow-hidden">
+            <div className="bg-primary text-white p-3 flex justify-between items-center">
+              <span className="font-semibold">Saarthi Chatbot</span>
+              <div className="flex items-center gap-2">
+                <select
+                  value={selectedLanguage}
+                  onChange={(e) => setSelectedLanguage(e.target.value)}
+                  className="border px-2 py-1 rounded-md text-sm text-black"
+                >
+                  {languages.map((lang) => (
+                    <option key={lang.code} value={lang.label}>
+                      {lang.label}
+                    </option>
+                  ))}
+                </select>
+                <button onClick={() => setChatOpen(false)} className="text-white text-xl">
+                  ✖
+                </button>
+              </div>
+            </div>
+            <div className="flex-1 p-2 overflow-y-auto space-y-2">
+              {chatHistory.map((msg, idx) => {
+                const isUser = msg.role === "user";
+                const isButtonMsg =
+                  typeof msg.content === "object" &&
+                  msg.content.type === "product_buttons";
+
+                return (
+                  <div
+                    key={idx}
+                    className={`p-2 rounded-md max-w-[80%] ${
+                      isUser
+                        ? "bg-blue-100 self-end ml-auto"
+                        : "bg-gray-100 self-start"
+                    }`}
+                  >
+                    {isButtonMsg ? (
+                      <>
+                        <p className="mb-2 text-sm text-gray-800">
+                          {msg.content.message}
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {msg.content.products.map((prod, i) => (
+                            <a
+                              key={i}
+                              href={`/product/${prod.category}/${prod.id}`}
+                              className="bg-primary text-white px-3 py-1 text-xs rounded hover:bg-opacity-90"
+                            >
+                              {prod.name}
+                            </a>
+                          ))}
+                        </div>
+                      </>
+                    ) : (
+                      msg.content
+                    )}
+                  </div>
+                );
+              })}
+              {loading && (
+                <div className="text-sm text-gray-400">Typing...</div>
+              )}
+            </div>
+            <div className="p-2 border-t flex">
+              <input
+                type="text"
+                value={userInput}
+                onChange={(e) => setUserInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+                className="flex-1 border rounded-md px-2 py-1 text-sm"
+                placeholder="Ask something..."
+              />
+              <button
+                onClick={handleSendMessage}
+                className="ml-2 bg-primary text-white px-3 rounded-md text-sm"
+              >
+                Send
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     </>
   );
 };
