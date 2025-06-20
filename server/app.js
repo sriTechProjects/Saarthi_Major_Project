@@ -13,6 +13,7 @@ const commonRoutes = require("./routes/common/common");
 const ProductsRoutes = require("./routes/products/seller_Routes");
 const CartRoutes = require("./routes/buyer/cartRoutes")
 const OrderRoutes = require('./routes/buyer/orderRoutes')
+const ChatRoutes = require('./routes/buyer/chatRoutes')
 
 // Middleware
 app.use(cookieParser());
@@ -33,6 +34,7 @@ app.use("/api/saarthi/products", productRoutes);  // customer side
 app.use("/api/saarthi/", recommendationsRoutes);
 app.use("/api/saarthi/cart",CartRoutes);
 app.use("/api/saarthi/order", OrderRoutes)
+app.use("/api/saarthi/chat", ChatRoutes)
 app.use("/api/saarthi/comm", commonRoutes);
 app.use("/api/saarthi/product", ProductsRoutes);  // seller side
 

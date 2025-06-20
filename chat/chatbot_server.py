@@ -245,15 +245,15 @@ def chat():
     # Construct the prompt
     full_prompt = f"{data_for_prompt}User query: {user_query}\nAnswer as Saarthi chatbot."
 
-    # Call Ollama
-    response = requests.post(OLLAMA_URL, json={
-        "model": "mistral",
-        "prompt": full_prompt,
-        "stream": False
-    })
+        # Call Ollama
+        response = requests.post(OLLAMA_URL, json={
+            "model": "mistral",
+            "prompt": full_prompt,
+            "stream": False
+        })
 
-    if response.status_code != 200:
-        return jsonify({"error": "Failed to contact Ollama"}), 500
+        if response.status_code != 200:
+            return jsonify({"error": "Failed to contact Ollama"}), 500
 
     answer = response.json().get("response", "").strip()
 

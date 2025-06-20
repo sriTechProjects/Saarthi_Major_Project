@@ -260,6 +260,7 @@
 import { useContext, useEffect, useState } from "react";
 import { ProductCategoryCardComponent } from "../../utils/resource/ComponentsProvider.util";
 import RecommendedProducts from "../../components/customer_components/customer_common_components/RecommendedProducts";
+import ChatWidget from "../../components/customer_components/ChatWidget";
 import { AuthContext } from "../../contexts/AuthContext";
 import images from "../../utils/resource/ImageProvider.util";
 import axios from "axios";
